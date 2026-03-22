@@ -2,12 +2,30 @@
 
 import { useEffect, useRef, useState } from "react";
 
+type NavChild = {
+  id: string;
+  label: string;
+};
+
+type NavItem = {
+  id: string;
+  label: string;
+  children?: NavChild[];
+};
+
 interface SidebarProps {
-  sections: Array<{ id: string; label: string }>;
+  sections: NavItem[];
   activeId: string;
+  handledIds?: string[];
+  onNavigate?: (id: string) => void;
 }
 
-export default function Sidebar({ sections, activeId }: SidebarProps) {
+export default function Sidebar({
+  sections,
+  activeId,
+  handledIds = [],
+  onNavigate,
+}: SidebarProps) {
   const [open, setOpen] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -73,27 +91,71 @@ export default function Sidebar({ sections, activeId }: SidebarProps) {
   }, []);
 
   const navLinks = (
-    <nav className="mt-8 flex flex-col gap-2 text-sm">
+    <nav className="mt-4 flex flex-col gap-2 text-sm">
       {sections.map((section, index) => {
-        const isActive = activeId === section.id;
+        const isChildActive = section.children?.some((c) => c.id === activeId);
+        const isActive = activeId === section.id || isChildActive;
+        const handleThis =
+          handledIds.includes(section.id) && typeof onNavigate === "function";
+
         return (
-          <a
-            key={section.id}
-            href={`#${section.id}`}
-            onClick={() => setOpen(false)}
-            className={[
-              "group flex items-center gap-3 rounded-lg px-3 py-2 transition",
-              "border border-transparent",
-              isActive
-                ? "bg-slate-800/60 text-white"
-                : "text-slate-400 hover:bg-slate-800/40 hover:text-slate-100",
-            ].join(" ")}
-          >
-            <span className="text-[10px] font-semibold text-slate-500 group-hover:text-slate-300">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <span className="text-sm">{section.label}</span>
-          </a>
+          <div key={section.id} className="space-y-1">
+            <a
+              href={`#${section.id}`}
+              onClick={(e) => {
+                if (handleThis) {
+                  e.preventDefault();
+                  onNavigate?.(section.id);
+                }
+                setOpen(false);
+              }}
+              className={[
+                "group flex items-center gap-3 rounded-lg px-3 py-2 transition",
+                "border border-transparent",
+                isActive
+                  ? "bg-slate-800/60 text-white"
+                  : "text-slate-300 hover:bg-slate-800/40 hover:text-slate-100",
+              ].join(" ")}
+            >
+              <span className="text-[10px] font-semibold text-slate-400 group-hover:text-slate-200">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span className="text-sm">{section.label}</span>
+            </a>
+
+            {section.children?.length ? (
+              <div className="ml-6 flex flex-col gap-1">
+                {section.children.map((child) => {
+                  const childActive = activeId === child.id;
+                  const childHandle =
+                    handledIds.includes(child.id) &&
+                    typeof onNavigate === "function";
+                  return (
+                    <a
+                      key={child.id}
+                      href={`#${child.id}`}
+                      onClick={(e) => {
+                        if (childHandle) {
+                          e.preventDefault();
+                          onNavigate?.(child.id);
+                        }
+                        setOpen(false);
+                      }}
+                      className={[
+                        "rounded-lg px-3 py-2 text-xs transition",
+                        "border border-transparent",
+                        childActive
+                          ? "bg-slate-800/50 text-indigo-200"
+                          : "text-slate-400 hover:bg-slate-800/30 hover:text-slate-100",
+                      ].join(" ")}
+                    >
+                      {child.label}
+                    </a>
+                  );
+                })}
+              </div>
+            ) : null}
+          </div>
         );
       })}
     </nav>
@@ -104,7 +166,7 @@ export default function Sidebar({ sections, activeId }: SidebarProps) {
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="fixed left-4 top-4 z-40 rounded-lg border border-slate-800 bg-slate-950/80 px-3 py-2 text-xs text-slate-200 backdrop-blur md:hidden"
+        className="fixed left-4 top-4 z-40 rounded-lg border border-slate-700 bg-slate-800/80 px-3 py-2 text-xs text-slate-200 backdrop-blur md:hidden"
       >
         Menu
       </button>
@@ -116,33 +178,40 @@ export default function Sidebar({ sections, activeId }: SidebarProps) {
         />
       ) : null}
 
-      <aside className="fixed left-0 top-0 z-40 hidden h-screen w-[260px] border-r border-slate-800/60 bg-slate-950/80 px-6 py-6 backdrop-blur md:block">
+      <aside className="fixed left-0 top-0 z-40 hidden h-screen w-[260px] border-r border-slate-700/60 bg-slate-800/80 px-6 pt-16 pb-6 backdrop-blur md:block">
         <div className="relative flex h-full flex-col">
           <canvas
             ref={canvasRef}
             className="pointer-events-none absolute right-0 top-6 opacity-30"
           />
-          <div className="relative z-10">
-            <div className="text-xs uppercase tracking-[0.3em] text-slate-400">
+          <div className="relative z-10 flex-shrink-0">
+            <div className="text-xs uppercase tracking-[0.3em] text-slate-300">
               Research Site
             </div>
             <div className="mt-2 text-base font-semibold text-white">
-              Emergence at the Edge of Chaos
+              Cellular Automata and the
+              Edge of Chaos
             </div>
+          </div>
+          <div className="relative z-10 mt-10 border-t border-slate-700/50 flex-1 overflow-y-auto">
             {navLinks}
           </div>
         </div>
       </aside>
 
       {open ? (
-        <aside className="fixed left-0 top-0 z-40 h-screen w-[260px] border-r border-slate-800/60 bg-slate-950/95 px-6 py-6 backdrop-blur md:hidden">
-          <div className="text-xs uppercase tracking-[0.3em] text-slate-400">
-            Research Site
+        <aside className="fixed left-0 top-0 z-40 flex h-screen w-[260px] flex-col border-r border-slate-700/60 bg-slate-800/95 px-6 pt-4 pb-6 backdrop-blur md:hidden">
+          <div className="flex-shrink-0">
+            <div className="text-xs uppercase tracking-[0.3em] text-slate-300">
+              Research Site
+            </div>
+            <div className="mt-2 text-base font-semibold text-white">
+              Cellular Automata and the Edge of Chaos
+            </div>
           </div>
-          <div className="mt-2 text-base font-semibold text-white">
-            Emergence at the Edge of Chaos
+          <div className="mt-8 border-t border-slate-700/50 flex-1 overflow-y-auto">
+            {navLinks}
           </div>
-          {navLinks}
         </aside>
       ) : null}
     </>

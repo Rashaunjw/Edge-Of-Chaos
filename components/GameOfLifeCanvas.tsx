@@ -25,6 +25,8 @@ export default function GameOfLifeCanvas({
   initialCols = 90,
 }: GameOfLifeCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const isDrawingRef = useRef(false);
+  const drawModeRef = useRef<"fill" | "erase" | null>(null);
   const [rows, setRows] = useState(initialRows);
   const [cols, setCols] = useState(initialCols);
   const [cellSize, setCellSize] = useState(8);
@@ -115,6 +117,23 @@ export default function GameOfLifeCanvas({
       }
     }
     ctx.restore();
+
+    ctx.strokeStyle = "rgba(148, 163, 184, 0.16)";
+    ctx.lineWidth = 1;
+    for (let x = 0; x <= drawCols; x += 1) {
+      const px = x * cellW + 0.5;
+      ctx.beginPath();
+      ctx.moveTo(px, 0);
+      ctx.lineTo(px, drawRows * cellH);
+      ctx.stroke();
+    }
+    for (let y = 0; y <= drawRows; y += 1) {
+      const py = y * cellH + 0.5;
+      ctx.beginPath();
+      ctx.moveTo(0, py);
+      ctx.lineTo(drawCols * cellW, py);
+      ctx.stroke();
+    }
   }, [cellSize, cols, grid, rows]);
 
   const handleReset = useCallback(() => {
@@ -136,29 +155,75 @@ export default function GameOfLifeCanvas({
     [cols, rows]
   );
 
-  const handleCanvasClick = useCallback(
+  const getCellFromEvent = useCallback(
     (event: React.MouseEvent<HTMLCanvasElement>) => {
       const canvas = canvasRef.current;
-      if (!canvas) return;
+      if (!canvas) return null;
       const rect = canvas.getBoundingClientRect();
       const x = Math.floor((event.clientX - rect.left) / cellSize);
       const y = Math.floor((event.clientY - rect.top) / cellSize);
-      const idx = y * cols + x;
-      if (x < 0 || y < 0 || x >= cols || y >= rows) return;
-      setGrid((prev) => {
-        const next = prev.slice();
-        next[idx] = next[idx] ? 0 : 1;
-        return next;
-      });
+      if (x < 0 || y < 0 || x >= cols || y >= rows) return null;
+      return { x, y, idx: y * cols + x };
     },
     [cellSize, cols, rows]
   );
 
+  const paintCell = useCallback((idx: number, mode: "fill" | "erase" | null) => {
+    setGrid((prev) => {
+      const next = prev.slice();
+      if (mode === "fill") next[idx] = 1;
+      else if (mode === "erase") next[idx] = 0;
+      else next[idx] = next[idx] ? 0 : 1;
+      return next;
+    });
+  }, []);
+
+  const handleCanvasClick = useCallback(
+    (event: React.MouseEvent<HTMLCanvasElement>) => {
+      const cell = getCellFromEvent(event);
+      if (!cell) return;
+      paintCell(cell.idx, null);
+    },
+    [getCellFromEvent, paintCell]
+  );
+
+  const handleMouseDown = useCallback(
+    (event: React.MouseEvent<HTMLCanvasElement>) => {
+      const cell = getCellFromEvent(event);
+      if (!cell) return;
+      isDrawingRef.current = true;
+      drawModeRef.current = grid[cell.idx] ? "erase" : "fill";
+      paintCell(cell.idx, drawModeRef.current);
+    },
+    [getCellFromEvent, grid, paintCell]
+  );
+
+  const handleMouseMove = useCallback(
+    (event: React.MouseEvent<HTMLCanvasElement>) => {
+      if (!isDrawingRef.current) return;
+      const cell = getCellFromEvent(event);
+      if (!cell) return;
+      paintCell(cell.idx, drawModeRef.current);
+    },
+    [getCellFromEvent, paintCell]
+  );
+
+  const stopDrawing = useCallback(() => {
+    isDrawingRef.current = false;
+    drawModeRef.current = null;
+  }, []);
+
+  useEffect(() => {
+    const onMouseUp = () => stopDrawing();
+    window.addEventListener("mouseup", onMouseUp);
+    return () => window.removeEventListener("mouseup", onMouseUp);
+  }, [stopDrawing]);
+
   return (
-    <div className="space-y-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-4 shadow-sm">
+    <div className="space-y-4 rounded-2xl border border-slate-700 bg-slate-800/60 p-4 shadow-sm">
       <div>
         <div className="text-sm font-semibold text-white">{title}</div>
-        <p className="mt-1 text-xs text-slate-400">{description}</p>
+        <p className="mt-1 text-xs text-slate-300">{description}</p>
       </div>
 
       <div className="flex flex-wrap gap-2 text-xs">
@@ -172,29 +237,36 @@ export default function GameOfLifeCanvas({
         <button
           type="button"
           onClick={() => setRunning(false)}
-          className="rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-slate-200"
+          className="rounded-full border border-slate-700 bg-slate-800/70 px-3 py-1 text-slate-200"
         >
           Pause
         </button>
         <button
           type="button"
           onClick={handleReset}
-          className="rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-slate-200"
+          className="rounded-full border border-slate-700 bg-slate-800/70 px-3 py-1 text-slate-200"
         >
           Reset
         </button>
         <button
           type="button"
           onClick={handleRandomize}
-          className="rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-slate-200"
+          className="rounded-full border border-slate-700 bg-slate-800/70 px-3 py-1 text-slate-200"
         >
           Randomize
         </button>
+        <button
+          type="button"
+          onClick={step}
+          className="rounded-full border border-slate-700 bg-slate-800/70 px-3 py-1 text-slate-200"
+        >
+          Step
+        </button>
       </div>
 
-      <div className="grid gap-3 text-xs text-slate-300 md:grid-cols-3">
+      <div className="grid gap-3 text-xs text-slate-200 md:grid-cols-3">
         <label className="space-y-1">
-          <span className="text-slate-400">Speed</span>
+          <span className="text-slate-300">Speed</span>
           <input
             type="range"
             min={60}
@@ -205,32 +277,32 @@ export default function GameOfLifeCanvas({
           />
         </label>
         <label className="space-y-1">
-          <span className="text-slate-400">Rows</span>
+          <span className="text-slate-300">Rows</span>
           <input
             type="number"
             min={20}
             max={120}
             value={rows}
             onChange={(e) => setRows(Number(e.target.value) || rows)}
-            className="w-full rounded-md border border-slate-700 bg-slate-950/60 px-2 py-1 text-xs text-slate-200"
+            className="w-full rounded-md border border-slate-700 bg-slate-800/60 px-2 py-1 text-xs text-slate-200"
           />
         </label>
         <label className="space-y-1">
-          <span className="text-slate-400">Columns</span>
+          <span className="text-slate-300">Columns</span>
           <input
             type="number"
             min={20}
             max={160}
             value={cols}
             onChange={(e) => setCols(Number(e.target.value) || cols)}
-            className="w-full rounded-md border border-slate-700 bg-slate-950/60 px-2 py-1 text-xs text-slate-200"
+            className="w-full rounded-md border border-slate-700 bg-slate-800/60 px-2 py-1 text-xs text-slate-200"
           />
         </label>
       </div>
 
-      <div className="flex flex-wrap items-center gap-3 text-xs text-slate-300">
+      <div className="flex flex-wrap items-center gap-3 text-xs text-slate-200">
         <label className="flex items-center gap-2">
-          <span className="text-slate-400">Cell size</span>
+          <span className="text-slate-300">Cell size</span>
           <input
             type="range"
             min={4}
@@ -246,10 +318,13 @@ export default function GameOfLifeCanvas({
 
       <PatternLibrary onSelect={handlePattern} />
 
-      <div className="rounded-xl border border-slate-800 bg-slate-950/50 p-2">
+      <div className="rounded-xl border border-slate-700 bg-slate-800/50 p-2">
         <canvas
           ref={canvasRef}
           onClick={handleCanvasClick}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={stopDrawing}
           className="h-full w-full cursor-crosshair rounded-lg"
         />
       </div>

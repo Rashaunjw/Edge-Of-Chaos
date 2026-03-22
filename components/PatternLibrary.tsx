@@ -19,7 +19,7 @@ const patterns: Pattern[] = [
     ],
   },
   {
-    name: "Blinker",
+    name: "Oscillator (Blinker)",
     points: [
       [-1, 0],
       [0, 0],
@@ -52,7 +52,7 @@ const patterns: Pattern[] = [
     ],
   },
   {
-    name: "Glider Gun",
+    name: "Glider Gun (Shoots Gliders)",
     points: [
       [0, 4],
       [1, 4],

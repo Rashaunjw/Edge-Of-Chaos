@@ -12,7 +12,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-slate-950 text-slate-100">{children}</body>
+      <body className="text-slate-100" style={{ backgroundColor: "#192A4F" }}>{children}</body>
     </html>
   );
 }

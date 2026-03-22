@@ -20,7 +20,7 @@ export default function Section({
       id={id}
       data-section
       className={[
-        "snap-section relative flex min-h-screen items-center scroll-mt-12 border-b border-slate-800/60 py-16",
+        "snap-section relative flex min-h-screen items-start scroll-mt-12 border-b border-slate-700/60 py-8",
         className ?? "",
       ].join(" ")}
     >
@@ -35,7 +35,7 @@ export default function Section({
           <div>
             <h2 className="text-3xl font-semibold text-white">{title}</h2>
             {subtitle ? (
-              <p className="mt-2 text-sm text-slate-400">{subtitle}</p>
+              <p className="mt-2 text-sm text-slate-300">{subtitle}</p>
             ) : null}
           </div>
         ) : null}
