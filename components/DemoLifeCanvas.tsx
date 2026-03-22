@@ -10,18 +10,84 @@ import {
 const CELL = 10;
 
 const PRESETS = [
+  // ── Still Lifes ──────────────────────────────────────────────────────────
+  {
+    label: "Block",
+    category: "Still Life",
+    points: [
+      [0, 0], [1, 0],
+      [0, 1], [1, 1],
+    ] as Array<[number, number]>,
+  },
+  {
+    label: "Beehive",
+    category: "Still Life",
+    points: [
+      [1, 0], [2, 0],
+      [0, 1], [3, 1],
+      [1, 2], [2, 2],
+    ] as Array<[number, number]>,
+  },
+  // ── Oscillators ──────────────────────────────────────────────────────────
+  {
+    label: "Blinker",
+    category: "Oscillator",
+    points: [[-1, 0], [0, 0], [1, 0]] as Array<[number, number]>,
+  },
+  {
+    label: "Toad",
+    category: "Oscillator",
+    points: [
+      [1, 0], [2, 0], [3, 0],
+      [0, 1], [1, 1], [2, 1],
+    ] as Array<[number, number]>,
+  },
+  {
+    label: "Beacon",
+    category: "Oscillator",
+    points: [
+      [0, 0], [1, 0],
+      [0, 1],
+      [3, 2],
+      [2, 3], [3, 3],
+    ] as Array<[number, number]>,
+  },
+  {
+    label: "Pulsar",
+    category: "Oscillator",
+    points: [
+      [2, 0], [3, 0], [4, 0], [8, 0], [9, 0], [10, 0],
+      [0, 2], [5, 2], [7, 2], [12, 2],
+      [0, 3], [5, 3], [7, 3], [12, 3],
+      [0, 4], [5, 4], [7, 4], [12, 4],
+      [2, 5], [3, 5], [4, 5], [8, 5], [9, 5], [10, 5],
+      [2, 7], [3, 7], [4, 7], [8, 7], [9, 7], [10, 7],
+      [0, 8], [5, 8], [7, 8], [12, 8],
+      [0, 9], [5, 9], [7, 9], [12, 9],
+      [0, 10], [5, 10], [7, 10], [12, 10],
+      [2, 12], [3, 12], [4, 12], [8, 12], [9, 12], [10, 12],
+    ] as Array<[number, number]>,
+  },
+  {
+    label: "Pentadecathlon",
+    category: "Oscillator",
+    points: [
+      [2, 0], [8, 0],
+      [0, 1], [1, 1], [3, 1], [4, 1], [5, 1], [6, 1], [7, 1], [9, 1], [10, 1],
+      [2, 2], [8, 2],
+    ] as Array<[number, number]>,
+  },
+  // ── Spaceships ───────────────────────────────────────────────────────────
   {
     label: "Glider",
+    category: "Spaceship",
     points: [
       [1, 0], [2, 1], [0, 2], [1, 2], [2, 2],
     ] as Array<[number, number]>,
   },
   {
-    label: "Blinker",
-    points: [[-1, 0], [0, 0], [1, 0]] as Array<[number, number]>,
-  },
-  {
-    label: "Spaceship",
+    label: "LWSS",
+    category: "Spaceship",
     points: [
       [0, 0], [3, 0],
       [4, 1],
@@ -30,7 +96,31 @@ const PRESETS = [
     ] as Array<[number, number]>,
   },
   {
+    label: "MWSS",
+    category: "Spaceship",
+    points: [
+      [2, 0], [3, 0],
+      [0, 1], [4, 1],
+      [4, 2],
+      [0, 3], [4, 3],
+      [1, 4], [2, 4], [3, 4], [4, 4],
+    ] as Array<[number, number]>,
+  },
+  {
+    label: "HWSS",
+    category: "Spaceship",
+    points: [
+      [2, 0], [3, 0], [4, 0],
+      [0, 1], [5, 1],
+      [5, 2],
+      [0, 3], [5, 3],
+      [1, 4], [2, 4], [3, 4], [4, 4], [5, 4],
+    ] as Array<[number, number]>,
+  },
+  // ── Guns ─────────────────────────────────────────────────────────────────
+  {
     label: "Glider Gun",
+    category: "Gun",
     points: [
       [0, 4], [1, 4], [0, 5], [1, 5],
       [10, 4], [10, 5], [10, 6],
@@ -47,6 +137,34 @@ const PRESETS = [
       [24, 0], [24, 1], [24, 5], [24, 6],
       [34, 2], [34, 3],
       [35, 2], [35, 3],
+    ] as Array<[number, number]>,
+  },
+  // ── Methuselahs ──────────────────────────────────────────────────────────
+  {
+    label: "R-pentomino",
+    category: "Methuselah",
+    points: [
+      [1, 0], [2, 0],
+      [0, 1], [1, 1],
+      [1, 2],
+    ] as Array<[number, number]>,
+  },
+  {
+    label: "Acorn",
+    category: "Methuselah",
+    points: [
+      [1, 0],
+      [3, 1],
+      [0, 2], [1, 2], [4, 2], [5, 2], [6, 2],
+    ] as Array<[number, number]>,
+  },
+  {
+    label: "Diehard",
+    category: "Methuselah",
+    points: [
+      [6, 0],
+      [0, 1], [1, 1],
+      [1, 2], [5, 2], [6, 2], [7, 2],
     ] as Array<[number, number]>,
   },
 ];
@@ -276,54 +394,58 @@ export default function DemoLifeCanvas() {
       </div>
 
       {/* Controls */}
-      <div className="flex flex-wrap items-center gap-2">
-        {/* Start / Pause */}
-        <button
-          type="button"
-          onClick={() => setRunning((r) => !r)}
-          className={[
-            "rounded-full border px-5 py-1.5 text-xs font-medium transition",
-            running
-              ? "border-amber-400/60 bg-amber-500/20 text-amber-100 hover:bg-amber-500/30"
-              : "border-indigo-400/60 bg-indigo-500/20 text-indigo-100 hover:bg-indigo-500/30",
-          ].join(" ")}
-        >
-          {running ? "Pause" : "▶ Start"}
-        </button>
-
-        {/* Reset */}
-        <button
-          type="button"
-          onClick={handleReset}
-          className="rounded-full border border-slate-700 bg-slate-800/60 px-4 py-1.5 text-xs text-slate-200 transition hover:border-slate-500 hover:text-white"
-        >
-          Reset
-        </button>
-
-        {/* Divider */}
-        <div className="h-4 w-px bg-slate-700/60" />
-
-        {/* Pattern presets */}
-        {PRESETS.map((preset) => (
+      <div className="flex flex-col gap-2">
+        {/* Primary controls row */}
+        <div className="flex flex-wrap items-center gap-2">
           <button
-            key={preset.label}
             type="button"
-            onClick={() => setPlacing(placing?.label === preset.label ? null : preset)}
+            onClick={() => setRunning((r) => !r)}
             className={[
-              "rounded-full border px-4 py-1.5 text-xs transition",
-              placing?.label === preset.label
-                ? "border-indigo-400/80 bg-indigo-500/30 text-indigo-100"
-                : "border-slate-700 bg-slate-800/60 text-slate-200 hover:border-indigo-400/60 hover:bg-indigo-500/10 hover:text-indigo-100",
+              "rounded-full border px-5 py-1.5 text-xs font-medium transition",
+              running
+                ? "border-amber-400/60 bg-amber-500/20 text-amber-100 hover:bg-amber-500/30"
+                : "border-indigo-400/60 bg-indigo-500/20 text-indigo-100 hover:bg-indigo-500/30",
             ].join(" ")}
           >
-            {placing?.label === preset.label ? `Placing ${preset.label}…` : `+ ${preset.label}`}
+            {running ? "Pause" : "▶ Start"}
           </button>
-        ))}
+          <button
+            type="button"
+            onClick={handleReset}
+            className="rounded-full border border-slate-700 bg-slate-800/60 px-4 py-1.5 text-xs text-slate-200 transition hover:border-slate-500 hover:text-white"
+          >
+            Reset
+          </button>
+          <span className="ml-auto text-xs text-slate-500">Gen {generation}</span>
+        </div>
 
-        {/* Generation counter */}
-        <span className="ml-auto text-xs text-slate-500">
-          Gen {generation}
-        </span>
+        {/* Pattern presets grouped by category */}
+        {(["Still Life", "Oscillator", "Spaceship", "Gun", "Methuselah"] as const).map((cat) => {
+          const group = PRESETS.filter((p) => p.category === cat);
+          if (!group.length) return null;
+          return (
+            <div key={cat} className="flex flex-wrap items-center gap-1.5">
+              <span className="w-20 shrink-0 text-[10px] font-semibold uppercase tracking-widest text-slate-500">
+                {cat}
+              </span>
+              {group.map((preset) => (
+                <button
+                  key={preset.label}
+                  type="button"
+                  onClick={() => setPlacing(placing?.label === preset.label ? null : preset)}
+                  className={[
+                    "rounded-full border px-3 py-1 text-xs transition",
+                    placing?.label === preset.label
+                      ? "border-indigo-400/80 bg-indigo-500/30 text-indigo-100"
+                      : "border-slate-700 bg-slate-800/60 text-slate-300 hover:border-indigo-400/60 hover:bg-indigo-500/10 hover:text-indigo-100",
+                  ].join(" ")}
+                >
+                  {placing?.label === preset.label ? `Placing…` : `+ ${preset.label}`}
+                </button>
+              ))}
+            </div>
+          );
+        })}
       </div>
 
       {/* Canvas */}

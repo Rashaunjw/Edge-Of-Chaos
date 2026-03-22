@@ -1,175 +1,239 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import ComplexityMeter from "@/components/ComplexityMeter";
-import { createGrid, randomizeGrid } from "@/lib/ca/grid";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+const CW = 100;
+const CH = 68;
+
+type RuleKey = "order" | "life" | "chaos";
+
+const RULES: Record<RuleKey, { B: number[]; S: number[] }> = {
+  order: { B: [3],    S: [1, 2, 3, 4] },
+  life:  { B: [3],    S: [2, 3] },
+  chaos: { B: [3, 6], S: [] },
+};
+
+const DESCS: Record<RuleKey, string> = {
+  order:
+    "High stability: cells survive with many neighbors, grids solidify into stable dense blobs with little change.",
+  life:
+    "Edge of chaos: Life sits at the boundary between order and chaos — complex, persistent structures like gliders emerge.",
+  chaos:
+    "Total chaos: no survival rule, cells flicker randomly every generation, no structure persists.",
+};
+
+// Slider has 3 snap zones: 0–33 = order, 34–66 = life, 67–100 = chaos
+function ruleFromSlider(v: number): RuleKey {
+  if (v < 34) return "order";
+  if (v < 67) return "life";
+  return "chaos";
+}
+
+// Accent color for each zone
+const ZONE_COLOR: Record<RuleKey, string> = {
+  order: "#60a5fa",   // blue-400
+  life:  "#a78bfa",   // violet-400
+  chaos: "#f87171",   // red-400
+};
+
+function makeGrid(): Uint8Array {
+  const g = new Uint8Array(CW * CH);
+  for (let i = 0; i < g.length; i++) g[i] = Math.random() < 0.35 ? 1 : 0;
+  return g;
+}
+
+function step(grid: Uint8Array, rule: { B: number[]; S: number[] }): Uint8Array {
+  const next = new Uint8Array(CW * CH);
+  for (let y = 0; y < CH; y++) {
+    for (let x = 0; x < CW; x++) {
+      let n = 0;
+      for (let dy = -1; dy <= 1; dy++) {
+        for (let dx = -1; dx <= 1; dx++) {
+          if (dx === 0 && dy === 0) continue;
+          n += grid[((y + dy + CH) % CH) * CW + ((x + dx + CW) % CW)];
+        }
+      }
+      const c = grid[y * CW + x];
+      next[y * CW + x] =
+        (c && rule.S.includes(n)) || (!c && rule.B.includes(n)) ? 1 : 0;
+    }
+  }
+  return next;
+}
+
+function drawCanvas(canvas: HTMLCanvasElement, grid: Uint8Array, prev: Uint8Array) {
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+  const dpr = window.devicePixelRatio || 1;
+  const w = canvas.clientWidth || 600;
+  const h = canvas.clientHeight || 280;
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  ctx.scale(dpr, dpr);
+  const cw = w / CW;
+  const rh = h / CH;
+  ctx.fillStyle = "#0b1120";
+  ctx.fillRect(0, 0, w, h);
+  for (let y = 0; y < CH; y++) {
+    for (let x = 0; x < CW; x++) {
+      const c = grid[y * CW + x];
+      const p = prev[y * CW + x];
+      if      ( c &&  p) ctx.fillStyle = "#1D9E75";
+      else if ( c && !p) ctx.fillStyle = "#9FE1CB";
+      else if (!c &&  p) ctx.fillStyle = "#4a5568";
+      else continue;
+      ctx.fillRect(x * cw + 0.5, y * rh + 0.5, cw - 1, rh - 1);
+    }
+  }
+}
 
 export default function EdgeOfChaosDemo() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [control, setControl] = useState(50);
-  const [running, setRunning] = useState(true);
-  const [grid, setGrid] = useState(() => createGrid(100, 60));
-  const [changeRate, setChangeRate] = useState(0);
+  const gridRef   = useRef<Uint8Array>(makeGrid());
+  const prevRef   = useRef<Uint8Array>(new Uint8Array(CW * CH));
+  const ruleRef   = useRef<RuleKey>("life");
+  const rafRef    = useRef<number | null>(null);
+  const frameRef  = useRef(0);
+  const runningRef = useRef(false);
 
-  const cols = 100;
-  const rows = 60;
+  const [sliderValue, setSliderValue] = useState(50); // start at edge of chaos
+  const [activeRule, setActiveRule]   = useState<RuleKey>("life");
+  const [running, setRunning]         = useState(false);
 
-  const density = useMemo(() => {
-    let live = 0;
-    for (let i = 0; i < grid.length; i += 1) live += grid[i];
-    return grid.length ? live / grid.length : 0;
-  }, [grid]);
+  const randomize = useCallback(() => {
+    gridRef.current = makeGrid();
+    prevRef.current = new Uint8Array(CW * CH);
+    if (canvasRef.current) drawCanvas(canvasRef.current, gridRef.current, prevRef.current);
+  }, []);
 
-  const statusLabel = useMemo(() => {
-    if (control < 30) return "Mostly Ordered";
-    if (control < 70) return "Complex / Edge Region";
-    return "Mostly Chaotic";
-  }, [control]);
-
-  const seed = useCallback(() => {
-    const densityValue = control < 35 ? 0.12 : control < 70 ? 0.28 : 0.45;
-    setGrid(randomizeGrid(createGrid(cols, rows), densityValue));
-  }, [cols, control, rows]);
-
-  useEffect(() => {
-    seed();
-  }, [seed]);
-
-  useEffect(() => {
-    if (!running) return;
-    const id = window.setInterval(() => {
-      setGrid((prev) => {
-        const next = new Uint8Array(prev.length);
-        let changed = 0;
-        for (let y = 0; y < rows; y += 1) {
-          for (let x = 0; x < cols; x += 1) {
-            let neighbors = 0;
-            for (let dy = -1; dy <= 1; dy += 1) {
-              for (let dx = -1; dx <= 1; dx += 1) {
-                if (dx === 0 && dy === 0) continue;
-                const nx = x + dx;
-                const ny = y + dy;
-                if (nx < 0 || ny < 0 || nx >= cols || ny >= rows) continue;
-                neighbors += prev[ny * cols + nx];
-              }
-            }
-            const idx = y * cols + x;
-            let value = 0;
-            const chaosFactor = control / 100;
-            const birth = chaosFactor < 0.4 ? 3 : chaosFactor < 0.7 ? 3 : 2;
-            const surviveMin = chaosFactor < 0.4 ? 2 : chaosFactor < 0.7 ? 2 : 1;
-            const surviveMax = chaosFactor < 0.4 ? 3 : chaosFactor < 0.7 ? 3 : 4;
-            if (prev[idx]) {
-              value =
-                neighbors >= surviveMin && neighbors <= surviveMax ? 1 : 0;
-            } else {
-              value = neighbors === birth ? 1 : 0;
-            }
-            if (chaosFactor > 0.7 && Math.random() < (chaosFactor - 0.7) * 0.15) {
-              value = Math.random() > 0.5 ? 1 : 0;
-            }
-            next[idx] = value;
-            if (value !== prev[idx]) changed += 1;
-          }
-        }
-        setChangeRate(changed / next.length);
-        return next;
-      });
-    }, 180);
-    return () => window.clearInterval(id);
-  }, [cols, control, running, rows]);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    const ratio = window.devicePixelRatio || 1;
-    canvas.width = 720 * ratio;
-    canvas.height = 420 * ratio;
-    canvas.style.width = "100%";
-    canvas.style.height = "420px";
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(ratio, ratio);
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const cellW = (canvas.width / ratio) / cols;
-    const cellH = (canvas.height / ratio) / rows;
-    ctx.fillStyle = "#0b1120";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.save();
-    ctx.shadowColor = "rgba(139, 92, 246, 0.6)";
-    ctx.shadowBlur = 12;
-    ctx.fillStyle = "rgba(139, 92, 246, 0.9)";
-    for (let i = 0; i < grid.length; i += 1) {
-      if (!grid[i]) continue;
-      const x = i % cols;
-      const y = Math.floor(i / cols);
-      ctx.fillRect(x * cellW, y * cellH, cellW, cellH);
+  const loop = useCallback(() => {
+    frameRef.current++;
+    if (frameRef.current % 2 === 0 && runningRef.current) {
+      const next = step(gridRef.current, RULES[ruleRef.current]);
+      prevRef.current = gridRef.current;
+      gridRef.current = next;
+      if (canvasRef.current) drawCanvas(canvasRef.current, gridRef.current, prevRef.current);
     }
-    ctx.restore();
-  }, [cols, grid, rows]);
+    rafRef.current = requestAnimationFrame(loop);
+  }, []);
+
+  useEffect(() => {
+    rafRef.current = requestAnimationFrame(loop);
+    return () => { if (rafRef.current !== null) cancelAnimationFrame(rafRef.current); };
+  }, [loop]);
+
+  const handleSlider = (v: number) => {
+    const rule = ruleFromSlider(v);
+    setSliderValue(v);
+    if (rule !== activeRule) {
+      setActiveRule(rule);
+      ruleRef.current = rule;
+      randomize();
+    }
+  };
+
+  const toggleRunning = () => {
+    runningRef.current = !runningRef.current;
+    setRunning(runningRef.current);
+  };
+
+  const accentColor = ZONE_COLOR[activeRule];
+  // Filled portion of track as percentage
+  const fillPct = sliderValue;
 
   return (
-    <div className="space-y-5 rounded-2xl border border-slate-800 bg-slate-900/60 p-5 shadow-sm">
-      <div>
-        <div className="text-lg font-semibold text-white">Edge of Chaos</div>
-        <p className="mt-2 text-sm text-slate-400">
-          Christopher Langton proposed that the most interesting computational
-          behavior occurs at the boundary between order and chaos. In this
-          region, systems can support structure, information flow, and
-          persistent complexity.
-        </p>
-        <blockquote className="mt-3 border-l-2 border-indigo-400/60 pl-3 text-sm text-indigo-200">
-          “Life exists at the edge of chaos.”
-        </blockquote>
-      </div>
+    <div className="space-y-4 rounded-2xl border border-slate-700 bg-slate-900/60 p-5 shadow-sm">
 
-      <div className="space-y-3">
-        <label className="text-xs text-slate-400">Order → Edge → Chaos</label>
+      {/* Spectrum meter */}
+      <div className="space-y-2">
+        <div className="relative h-3 w-full rounded-full overflow-hidden"
+          style={{ background: "linear-gradient(to right, #60a5fa 0%, #a78bfa 50%, #f87171 100%)" }}>
+          {/* Dark overlay that erases the right portion, creating a "fill from left" effect */}
+          <div
+            className="absolute inset-y-0 right-0 rounded-r-full transition-all duration-150"
+            style={{ width: `${100 - fillPct}%`, background: "rgba(15,23,42,0.72)" }}
+          />
+        </div>
+
         <input
           type="range"
           min={0}
           max={100}
-          value={control}
-          onChange={(e) => setControl(Number(e.target.value))}
-          className="w-full accent-indigo-400"
+          value={sliderValue}
+          onChange={(e) => handleSlider(Number(e.target.value))}
+          className="w-full h-1 appearance-none bg-transparent cursor-pointer"
+          style={{ accentColor }}
         />
-        <div className="flex items-center justify-between text-xs text-slate-400">
-          <span>Order</span>
-          <span>Edge of Chaos</span>
-          <span>Chaos</span>
-        </div>
-        <div className="flex items-center gap-2 text-xs text-slate-300">
-          <span className="rounded-full border border-slate-700 px-2 py-1">
-            {statusLabel}
-          </span>
-          <button
-            type="button"
-            onClick={() => setRunning((prev) => !prev)}
-            className="rounded-full border border-indigo-400/60 bg-indigo-500/20 px-3 py-1 text-indigo-100"
-          >
-            {running ? "Pause" : "Start"}
-          </button>
-          <button
-            type="button"
-            onClick={seed}
-            className="rounded-full border border-slate-700 bg-slate-900/70 px-3 py-1 text-slate-200"
-          >
-            Reseed
-          </button>
+
+        <div className="flex justify-between text-xs select-none" style={{ color: "#94a3b8" }}>
+          <span style={{ color: activeRule === "order" ? "#60a5fa" : undefined }}>Order</span>
+          <span style={{ color: activeRule === "life"  ? "#a78bfa" : undefined }}>Edge of Chaos</span>
+          <span style={{ color: activeRule === "chaos" ? "#f87171" : undefined }}>Chaos</span>
         </div>
       </div>
 
-      <div className="rounded-xl border border-slate-800 bg-slate-950/50 p-2">
-        <canvas ref={canvasRef} className="w-full rounded-lg" />
+      {/* Active zone badge + buttons */}
+      <div className="flex flex-wrap items-center gap-3">
+        <span
+          className="rounded-full border px-3 py-1 text-xs font-medium transition-colors duration-300"
+          style={{ borderColor: accentColor, color: accentColor, background: `${accentColor}18` }}
+        >
+          {activeRule === "order" ? "Order — B3/S1234"
+            : activeRule === "life" ? "Edge of Chaos — B3/S23"
+            : "Chaos — B36/S"}
+        </span>
+
+        <button
+          type="button"
+          onClick={randomize}
+          className="rounded-lg border border-slate-600 bg-slate-800 px-3 py-1.5 text-xs text-slate-200 hover:bg-slate-700 transition"
+        >
+          Reset
+        </button>
+
+        <button
+          type="button"
+          onClick={toggleRunning}
+          className={[
+            "rounded-full border px-5 py-1.5 text-xs font-medium transition",
+            running
+              ? "border-amber-400/60 bg-amber-500/20 text-amber-100 hover:bg-amber-500/30"
+              : "border-indigo-400/60 bg-indigo-500/20 text-indigo-100 hover:bg-indigo-500/30",
+          ].join(" ")}
+        >
+          {running ? "Pause" : "▶ Start"}
+        </button>
       </div>
 
-      <ComplexityMeter
-        density={density}
-        changeRate={changeRate}
-        entropyProxy={Math.abs(density - 0.5)}
-      />
+      {/* Canvas */}
+      <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-1">
+        <canvas
+          ref={canvasRef}
+          className="w-full rounded-lg"
+          style={{ height: "280px", display: "block" }}
+        />
+      </div>
+
+      {/* Description */}
+      <p className="text-xs leading-relaxed transition-all duration-300" style={{ color: "#94a3b8" }}>
+        {DESCS[activeRule]}
+      </p>
+
+      {/* Legend */}
+      <div className="flex flex-wrap gap-4">
+        <div className="flex items-center gap-1.5">
+          <div className="h-3 w-3 flex-shrink-0 rounded-sm" style={{ background: "#1D9E75" }} />
+          <span className="text-xs text-slate-400">alive (stable)</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="h-3 w-3 flex-shrink-0 rounded-sm" style={{ background: "#9FE1CB" }} />
+          <span className="text-xs text-slate-400">just born</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="h-3 w-3 flex-shrink-0 rounded-sm" style={{ background: "#4a5568" }} />
+          <span className="text-xs text-slate-400">just died</span>
+        </div>
+      </div>
     </div>
   );
 }

@@ -91,15 +91,26 @@ export default function Sidebar({
   }, []);
 
   const navLinks = (
-    <nav className="mt-4 flex flex-col gap-2 text-sm">
+    <nav className="mt-4 flex flex-col gap-10 text-sm">
       {sections.map((section, index) => {
         const isChildActive = section.children?.some((c) => c.id === activeId);
         const isActive = activeId === section.id || isChildActive;
+        const allowHighlight = true;
         const handleThis =
           handledIds.includes(section.id) && typeof onNavigate === "function";
 
         return (
-          <div key={section.id} className="space-y-1">
+          <div
+            key={section.id}
+            className={[
+              "rounded-xl border transition-all duration-200",
+              allowHighlight && isActive
+                ? "border-indigo-500/60 bg-indigo-600/25 shadow-md shadow-indigo-900/30"
+                : isActive
+                ? "border-slate-600 bg-slate-700/40"
+                : "border-slate-700/50 bg-slate-800/30 hover:border-slate-600 hover:bg-slate-700/50 hover:shadow-sm",
+            ].join(" ")}
+          >
             <a
               href={`#${section.id}`}
               onClick={(e) => {
@@ -109,22 +120,31 @@ export default function Sidebar({
                 }
                 setOpen(false);
               }}
-              className={[
-                "group flex items-center gap-3 rounded-lg px-3 py-2 transition",
-                "border border-transparent",
-                isActive
-                  ? "bg-slate-800/60 text-white"
-                  : "text-slate-300 hover:bg-slate-800/40 hover:text-slate-100",
-              ].join(" ")}
+              className="group flex items-center gap-3 px-3 py-2.5"
             >
-              <span className="text-[10px] font-semibold text-slate-400 group-hover:text-slate-200">
+              <span className={[
+                "text-[10px] font-bold tabular-nums transition-colors duration-200",
+                allowHighlight && isActive
+                  ? "text-indigo-400"
+                  : isActive
+                  ? "text-slate-300"
+                  : "text-slate-500 group-hover:text-slate-300",
+              ].join(" ")}>
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <span className="text-sm">{section.label}</span>
+              <span className={[
+                "text-sm font-medium transition-colors duration-200",
+                isActive ? "text-white" : "text-slate-300 group-hover:text-white",
+              ].join(" ")}>
+                {section.label}
+              </span>
+              {allowHighlight && isActive && (
+                <span className="ml-auto h-1.5 w-1.5 rounded-full bg-indigo-400" />
+              )}
             </a>
 
             {section.children?.length ? (
-              <div className="ml-6 flex flex-col gap-1">
+              <div className="flex flex-col gap-1 border-t border-slate-700/50 px-3 pb-3 pt-2">
                 {section.children.map((child) => {
                   const childActive = activeId === child.id;
                   const childHandle =
@@ -142,11 +162,10 @@ export default function Sidebar({
                         setOpen(false);
                       }}
                       className={[
-                        "rounded-lg px-3 py-2 text-xs transition",
-                        "border border-transparent",
+                        "rounded-lg px-3 py-1.5 text-xs transition-all duration-200",
                         childActive
-                          ? "bg-slate-800/50 text-indigo-200"
-                          : "text-slate-400 hover:bg-slate-800/30 hover:text-slate-100",
+                          ? "bg-indigo-600/20 text-indigo-200"
+                          : "text-slate-400 hover:bg-slate-700/40 hover:text-slate-200",
                       ].join(" ")}
                     >
                       {child.label}
@@ -178,7 +197,7 @@ export default function Sidebar({
         />
       ) : null}
 
-      <aside className="fixed left-0 top-0 z-40 hidden h-screen w-[260px] border-r border-slate-700/60 bg-slate-800/80 px-6 pt-16 pb-6 backdrop-blur md:block">
+      <aside className="fixed left-0 top-0 z-40 hidden h-screen w-[260px] border-r border-slate-700/60 bg-slate-800/80 px-6 pt-12 pb-6 backdrop-blur md:block">
         <div className="relative flex h-full flex-col">
           <canvas
             ref={canvasRef}

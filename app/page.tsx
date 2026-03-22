@@ -7,14 +7,12 @@ import Section from "@/components/Section";
 import DemoLifeCanvas from "@/components/DemoLifeCanvas";
 import NatureCards from "@/components/NatureCards";
 import NeighborDiagram from "@/components/NeighborDiagram";
+import EdgeOfChaosDemo from "@/components/EdgeOfChaosDemo";
 
 const navItems = [
   {
     id: "introduction",
     label: "Introduction",
-    children: [
-      { id: "introduction-demo", label: "Demo" },
-    ],
   },
   {
     id: "foundation",
@@ -25,7 +23,7 @@ const navItems = [
     ],
   },
   { id: "edge-of-chaos", label: "Edge of Chaos" },
-  { id: "applications", label: "Real-World Applications" },
+  { id: "applications", label: "Applications" },
   { id: "conclusion", label: "Conclusion" },
 ];
 
@@ -43,7 +41,7 @@ export default function HomePage() {
 
   const applicationSubsections = useMemo(
     () => [
-      "applications-biology",
+      "applications-nature",
       "applications-neuroscience",
       "applications-art-games",
       "applications-ai",
@@ -112,7 +110,7 @@ export default function HomePage() {
         );
         setActiveId(best.target.id);
       },
-      { threshold: 0.4 }
+      { threshold: 0.05 }
     );
 
     elements.forEach((el) => observer.observe(el));
@@ -144,7 +142,7 @@ export default function HomePage() {
     <div className="relative min-h-screen bg-slate-800">
       <Sidebar
         sections={navItems}
-        activeId={activeId}
+        activeId={applicationSubsections.includes(activeId) ? "applications" : activeId}
         handledIds={handledNavIds}
         onNavigate={handleNavigate}
       />
@@ -187,7 +185,7 @@ export default function HomePage() {
                     edge between order and chaos.
                   </p>
                   <a
-                    href="#introduction-demo"
+                    href="#foundation"
                     className="inline-flex items-center rounded-full border border-indigo-400/60 bg-indigo-500/20 px-5 py-2 text-xs font-semibold text-indigo-100 transition hover:bg-indigo-500/30"
                   >
                     Next →
@@ -216,9 +214,9 @@ export default function HomePage() {
                       </div>
                     </div>
                     <div className="rounded-lg border border-slate-700 bg-slate-800/60 p-3">
-                      <div className="text-indigo-200">Real-World Applications</div>
+                      <div className="text-indigo-200">Applications</div>
                       <div className="mt-1 text-slate-300">
-                        Biology, neuroscience, economics, AI, and computational
+                        Nature, neuroscience, economics, AI, and computational
                         theory examples showing where edge-of-chaos behavior appears
                         in real systems.
                       </div>
@@ -228,14 +226,6 @@ export default function HomePage() {
               </div>
             </div>
           </Section>
-
-          <section
-            id="introduction-demo"
-            data-section
-            className="snap-section relative flex h-screen flex-col scroll-mt-12 border-b border-slate-700/60 px-6 py-8 md:px-10"
-          >
-            <DemoLifeCanvas />
-          </section>
 
           <Section
             id="foundation"
@@ -293,6 +283,7 @@ export default function HomePage() {
                 For now, it focuses on the conceptual rule-to-pattern connection.
               </div>
             </div>
+            <div className="h-screen" />
           </Section>
 
           <Section
@@ -300,57 +291,72 @@ export default function HomePage() {
             title="2D Cellular Automata"
             subtitle="Game of Life and emergent motion"
           >
-            <div className="space-y-6">
-              <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] items-stretch">
-                <div className="space-y-4 text-sm text-slate-200">
-                  <p>
-                    In 1970, mathematician John Conway created a famous two-dimensional
-                    cellular automaton: the Game of Life.
-                  </p>
-                  <p>
-                    It uses only a small set of local update rules, but the results can
-                    look alive—gliders, oscillators, and long-lived “guns” that generate
-                    moving patterns.
-                  </p>
-                  <p>
-                    Watch for how interaction between local structures amplifies into global
-                    motion and sustained activity.
-                  </p>
-                  <p className="text-indigo-200">
-                    This chapter emphasizes interpretation: understand how local neighbor
-                    interactions scale into persistent, life-like organization.
-                  </p>
-                  <div className="rounded-xl border border-slate-700 bg-slate-800/40 p-4">
-                    <div className="text-sm font-semibold text-white">
-                      Researcher Spotlight: John Conway
+            <div className="grid gap-6 lg:grid-cols-2 items-start">
+              <div className="space-y-4 text-sm text-slate-200">
+                <p>
+                  In 1970, mathematician John Conway created a famous two-dimensional
+                  cellular automaton: the Game of Life.
+                </p>
+                <p>
+                  It uses only a small set of local update rules, but the results can
+                  look alive—gliders, oscillators, and long-lived “guns” that generate
+                  moving patterns.
+                </p>
+                <p>
+                  Watch for how interaction between local structures amplifies into global
+                  motion and sustained activity.
+                </p>
+                <p className="text-indigo-200">
+                  This chapter emphasizes interpretation: understand how local neighbor
+                  interactions scale into persistent, life-like organization.
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-slate-700 bg-slate-800/40 p-4">
+                <div className="flex gap-4 items-start">
+                  <div className="flex-1 space-y-3">
+                    <div className="text-sm font-semibold text-white">John Conway</div>
+
+                    <div className="rounded-lg border border-slate-700/60 bg-slate-800/60 p-3 space-y-1">
+                      <div className="text-xs font-semibold uppercase tracking-widest text-indigo-300">Who</div>
+                      <ul className="mt-1 space-y-0.5 pl-1 text-slate-200 text-xs">
+                        <li>Mathematician at Cambridge</li>
+                        <li>Created the Game of Life (1970)</li>
+                      </ul>
                     </div>
-                    <ul className="mt-2 list-disc space-y-1 pl-5 text-slate-200">
-                      <li>
-                        Introduced the Game of Life (1970), showing complex
-                        behavior can emerge from very simple local rules.
-                      </li>
-                      <li>
-                        Demonstrated that rich motion and persistence do not
-                        require central control or a designer.
-                      </li>
-                      <li>
-                        His work helped popularize cellular automata as a serious
-                        model for emergence and computation.
-                      </li>
-                    </ul>
+
+                    <div className="rounded-lg border border-slate-700/60 bg-slate-800/60 p-3 space-y-1">
+                      <div className="text-xs font-semibold uppercase tracking-widest text-indigo-300">What</div>
+                      <ul className="mt-1 space-y-0.5 pl-1 text-slate-200 text-xs">
+                        <li>Developed a 2D cellular automaton with simple rules</li>
+                        <li>Demonstrated emergence of complex patterns</li>
+                      </ul>
+                    </div>
+
+                    <div className="rounded-lg border border-indigo-500/30 bg-indigo-600/10 p-3 space-y-1">
+                      <div className="text-xs font-semibold uppercase tracking-widest text-indigo-300">Why it matters</div>
+                      <p className="mt-1 text-xs text-indigo-100">
+                        Showed that simple rules can produce lifelike complexity and even universal computation.
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-col rounded-2xl border border-slate-700 bg-slate-800/30 p-4">
-                  <div className="text-xs uppercase tracking-[0.2em] text-slate-300">
-                    John Conway
+
+                  <div className="flex flex-col items-center gap-2 shrink-0">
+                    <img
+                      src="/researchers/john-conway.png"
+                      alt="John Conway"
+                      className="h-40 w-32 rounded-xl border border-slate-700/60 object-cover"
+                    />
+                    <div className="rounded-lg border border-slate-700/60 bg-slate-800/60 px-2 py-1.5 text-center w-full">
+                      <div className="text-xs font-semibold text-white">John Conway</div>
+                      <div className="text-[10px] text-slate-400">Mathematician · Cambridge</div>
+                    </div>
                   </div>
-                  <img
-                    src="/researchers/john-conway.png"
-                    alt="John Conway"
-                    className="mt-3 flex-1 w-full min-h-0 rounded-xl border border-slate-700/60 object-cover"
-                  />
                 </div>
               </div>
+            </div>
+            <div className="mt-144 h-screen">
+              <DemoLifeCanvas />
             </div>
           </Section>
 
@@ -374,35 +380,66 @@ export default function HomePage() {
                 fully ordered nor fully random.
               </p>
               <div className="rounded-xl border border-slate-700 bg-slate-800/40 p-4">
-                <div className="text-sm font-semibold text-white">
-                  Researcher Spotlight: Christopher Langton
+                <div className="flex gap-4 items-start">
+                  <div className="flex-1 space-y-3">
+                    <div className="text-sm font-semibold text-white">Christopher Langton</div>
+
+                    <div className="rounded-lg border border-slate-700/60 bg-slate-800/60 p-3 space-y-1">
+                      <div className="text-xs font-semibold uppercase tracking-widest text-indigo-300">Who</div>
+                      <ul className="mt-1 space-y-0.5 pl-1 text-slate-200 text-xs">
+                        <li>Computer scientist, founder of Artificial Life</li>
+                      </ul>
+                    </div>
+
+                    <div className="rounded-lg border border-slate-700/60 bg-slate-800/60 p-3 space-y-1">
+                      <div className="text-xs font-semibold uppercase tracking-widest text-indigo-300">What</div>
+                      <ul className="mt-1 space-y-0.5 pl-1 text-slate-200 text-xs">
+                        <li>Introduced the "Edge of Chaos" concept</li>
+                        <li>Studied phase transitions in cellular automata</li>
+                      </ul>
+                    </div>
+
+                    <div className="rounded-lg border border-indigo-500/30 bg-indigo-600/10 p-3 space-y-1">
+                      <div className="text-xs font-semibold uppercase tracking-widest text-indigo-300">Why</div>
+                      <p className="mt-1 text-xs text-indigo-100">
+                        Proposed that complexity and computation emerge at the boundary between order and chaos.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col items-center gap-2 shrink-0">
+                    <img
+                      src="/researchers/christopher-langton.png"
+                      alt="Christopher Langton"
+                      className="h-40 w-32 rounded-xl border border-slate-700/60 object-cover"
+                    />
+                  </div>
                 </div>
-                <ul className="mt-2 list-disc space-y-1 pl-5 text-slate-200">
-                  <li>
-                    Proposed the term <em>edge of chaos</em> to describe the
-                    regime between rigid order and full randomness.
-                  </li>
-                  <li>
-                    Argued that life-like complexity appears most strongly in
-                    this boundary region.
-                  </li>
-                  <li>
-                    Helped establish Artificial Life as a field, connecting
-                    cellular automata, adaptation, and emergent behavior.
-                  </li>
-                </ul>
-                <img
-                  src="/researchers/christopher-langton.png"
-                  alt="Christopher Langton"
-                  className="mt-3 h-56 w-auto max-w-full rounded-xl border border-slate-700/60 object-contain"
-                />
+              </div>
+
+            </div>
+            <div className="mt-36 flex flex-col gap-3 h-screen">
+              {/* Demo header — edit the text below */}
+              <div className="flex flex-col gap-1">
+                <div className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
+                  Live Demo
+                </div>
+                <div className="text-base font-semibold text-white">
+                  Edge of Chaos Explorer
+                </div>
+                <p className="text-xs text-slate-300">
+                  Drag the slider to move between order, the edge of chaos, and full randomness. Watch how the cellular automaton behavior changes.
+                </p>
+              </div>
+              <div className="flex-1 min-h-0">
+                <EdgeOfChaosDemo />
               </div>
             </div>
           </Section>
 
           <Section
             id="applications"
-            title="Real-World Applications"
+            title="Edge of Chaos in the Real World"
             subtitle="How cellular automata connect across disciplines"
             className="!py-0 scroll-mt-0"
           >
@@ -415,7 +452,7 @@ export default function HomePage() {
                 <div className="flex flex-wrap gap-2 flex-1">
                   {applicationSubsections.map((id, idx) => {
                     const labelById: Record<string, string> = {
-                      "applications-biology": "Biology/Nature",
+                      "applications-nature": "Nature",
                       "applications-neuroscience": "Neuroscience",
                       "applications-art-games": "Economics",
                       "applications-ai": "Artificial Intelligence",
@@ -495,24 +532,24 @@ export default function HomePage() {
                   style={{ transform: `translateX(-${applicationsIndex * 100}%)` }}
                 >
                   <div
-                    id="applications-biology"
-                    className="w-full flex-none h-full flex flex-col px-6 py-6"
+                    id="applications-nature"
+                    className="w-full flex-none h-full flex flex-col px-6 pt-8"
                   >
                     <div className="flex flex-col flex-1 min-h-0 gap-3 text-sm text-slate-200">
-                      <h3 className="text-2xl font-semibold text-white">
-                        Biology/Nature
-                      </h3>
+                      <h3 className="text-2xl font-semibold text-white">Nature</h3>
                       <div className="space-y-2">
                         <p>
-                          Many natural patterns emerge from local interactions between components.
-                          Cellular automata offer a clean way to model how “neighborhood rules”
-                          can generate global structure in systems like crystals, animals, and
-                          ecological spread.
+                          Zebra stripes are not random and not uniform — they emerge from
+                          a reaction-diffusion process that only produces coherent patterns
+                          near a critical boundary between diffusion rates. Snowflake branching
+                          and wildfire spread follow the same principle: complex structure only
+                          appears at the edge of chaos.
                         </p>
-                        <p>
-                          Near the edge of chaos, the system can balance stability (enough structure
-                          to persist) with flexibility (enough variability to adapt), which helps
-                          make pattern formation robust under perturbations.
+                        <p className="text-indigo-200">
+                          Tune the parameters toward full order: you get a single solid color
+                          or a frozen crystal with no branching. Tune toward full chaos: random
+                          noise with no structure. Only at the edge do the patterns we recognize
+                          from nature actually appear.
                         </p>
                       </div>
                       <div className="flex-1 min-h-0">
@@ -523,122 +560,127 @@ export default function HomePage() {
 
                   <div
                     id="applications-neuroscience"
-                    className="w-full flex-none h-full overflow-y-auto px-6 py-10"
+                    className="w-full flex-none h-full overflow-y-auto px-6 pt-8"
                   >
-                    <div className="space-y-5 text-sm text-slate-200">
-                      <h3 className="text-2xl font-semibold text-white">
-                        Neuroscience
-                      </h3>
-                      <p>
-                        Neural tissue can be modeled as an interacting network with local connectivity.
-                        Cellular automata translate that intuition into discrete states (e.g., resting,
-                        firing, refractory) updated by nearby activity.
-                      </p>
-                      <ul className="list-disc space-y-1 pl-5 text-slate-300">
-                        <li>
-                          Excitable-media-style propagation: activity can spread as traveling waves.
-                        </li>
-                        <li>
-                          Criticality and edge behavior: networks can exhibit rich dynamics between
-                          quiescence and runaway chaos.
-                        </li>
-                        <li>
-                          Self-organization: local learning rules can produce global functional
-                          organization over time.
-                        </li>
-                      </ul>
-                      <p className="text-indigo-200">
-                        In this context, the “edge of chaos” idea matches how brains may maintain a
-                        balance between stability for perception and flexibility for adaptation.
-                      </p>
+                    <div className="flex gap-0 items-stretch h-full">
+                      <div className="w-2/5 shrink-0 self-stretch overflow-hidden rounded-2xl border border-slate-700/60">
+                        <img
+                          src="/brain.webp"
+                          alt="Neuroscience"
+                          className="w-full h-full object-cover object-[70%_10%]"
+                        />
+                      </div>
+                      <div className="flex-1 space-y-5 text-sm text-slate-200 text-right pl-6 flex flex-col justify-start pt-0">
+                        <h3 className="text-2xl font-semibold text-white">Neuroscience</h3>
+                        <p>
+                          Neuroscientists believe the brain operates near the edge of chaos.
+                          Neural networks that are too rigid become unable to learn or respond
+                          to new input. Networks that are too chaotic lose coherent signal entirely.
+                        </p>
+                        <ul className="space-y-1 text-slate-300 list-none">
+                          <li>Criticality: the brain maintains a near-critical state for maximum information transfer</li>
+                          <li>Epilepsy as over-order: synchronized firing with no flexibility</li>
+                          <li>Healthy cognition sits between those extremes — structured yet adaptive</li>
+                        </ul>
+                        <p className="text-indigo-200">
+                          The edge of chaos is not just a metaphor here — it is measurable.
+                          Studies show cortical dynamics cluster near the critical point between order and disorder.
+                        </p>
+                      </div>
                     </div>
                   </div>
 
                   <div
                     id="applications-art-games"
-                    className="w-full flex-none h-full overflow-y-auto px-6 py-10"
+                    className="w-full flex-none h-full overflow-y-auto px-6 pt-8"
                   >
                     <div className="space-y-5 text-sm text-slate-200">
-                      <h3 className="text-2xl font-semibold text-white">
-                        Economics 
-                      </h3>
+                      <h3 className="text-2xl font-semibold text-white">Economics</h3>
                       <p>
-                        Markets behave like complex systems operating near the edge of
-                        chaos.
-                      </p>
-                      <p>
-                        In overly ordered conditions, markets may become rigid: low
-                        change, low innovation, and long-term stagnation.
+                        Markets are complex adaptive systems — and like living systems,
+                        they are healthiest when operating near the edge of chaos.
+                        Too much regulation locks markets into rigidity; too little regulation
+                        leads to crashes and unpredictability.
                       </p>
                       <ul className="list-disc space-y-1 pl-5 text-slate-300">
-                        <li>Too ordered: no change, no innovation, stagnation</li>
-                        <li>Too chaotic: crashes, instability, unpredictability</li>
-                        <li>Edge of chaos: growth, adaptation, innovation</li>
+                        <li><span className="text-white font-medium">Too ordered:</span> no innovation, stagnation, no price discovery</li>
+                        <li><span className="text-white font-medium">Too chaotic:</span> crashes, bank runs, systemic collapse</li>
+                        <li><span className="text-white font-medium">Edge of chaos:</span> adaptive growth, competition, resilience</li>
                       </ul>
                       <p className="text-indigo-200">
-                        Markets need structure to function, but also enough
-                        unpredictability to evolve.
+                        The 2008 financial crisis is a case study in what happens when a system
+                        tips from the edge into full disorder — local risk decisions cascaded
+                        into global collapse.
                       </p>
+                      <img
+                        src="/econ.avif"
+                        alt="Economics visualization"
+                        className="w-full rounded-xl border border-slate-700/60 object-cover max-h-52"
+                      />
                     </div>
                   </div>
 
                   <div
                     id="applications-ai"
-                    className="w-full flex-none h-full overflow-y-auto px-6 py-10"
+                    className="w-full flex-none h-full overflow-y-auto px-6 pt-8"
                   >
-                    <div className="space-y-5 text-sm text-slate-200">
-                      <h3 className="text-2xl font-semibold text-white">
-                        Artificial Intelligence
-                      </h3>
-                      <p>
-                        Cellular automata are also tools for computation and machine learning. Because CA
-                        dynamics are local and structured, they form a useful model for understanding how
-                        complex behavior can be generated from constrained updates.
-                      </p>
-                      <ul className="list-disc space-y-1 pl-5 text-slate-300">
-                        <li>
-                          Learning rules: search or optimization can tune CA transition rules to match data.
-                        </li>
-                        <li>
-                          Compact world models: CA can represent coarse dynamics efficiently.
-                        </li>
-                        <li>
-                          Inductive bias: locality acts like a built-in prior for many problems.
-                        </li>
-                      </ul>
-                      <p className="text-indigo-200">
-                        The edge of chaos perspective is often relevant for AI because it highlights regimes
-                        where systems can remain informative (not fully random) while still exploring new
-                        outcomes.
-                      </p>
+                    <div className="flex gap-0 items-stretch h-full">
+                      <div className="flex-1 space-y-5 text-sm text-slate-200 pr-6 flex flex-col justify-start pt-0">
+                        <h3 className="text-2xl font-semibold text-white">Artificial Intelligence</h3>
+                        <p>
+                          AI systems face the same tension as living systems: too much
+                          structure and a model cannot generalize; too little and it learns
+                          nothing useful. The edge of chaos describes the optimal training regime.
+                        </p>
+                        <ul className="list-disc space-y-1 pl-5 text-slate-300">
+                          <li>Neural networks trained at the edge of chaos show better generalization and memory capacity</li>
+                          <li>Vanishing vs. exploding gradients mirror order vs. chaos — stable training sits between them</li>
+                          <li>Reservoir computing explicitly exploits near-critical dynamics for temporal processing</li>
+                        </ul>
+                        <p className="text-indigo-200">
+                          Criticality is not just useful — it may be necessary.
+                          Many state-of-the-art models implicitly operate near phase transitions.
+                        </p>
+                      </div>
+                      <div className="w-3/5 shrink-0 self-stretch overflow-hidden rounded-2xl border border-slate-700/60">
+                        <img
+                          src="/Artificial-Intelligence.jpg"
+                          alt="Artificial Intelligence"
+                          className="w-full h-full object-cover object-center"
+                        />
+                      </div>
                     </div>
                   </div>
 
                   <div
                     id="applications-computational-theory"
-                    className="w-full flex-none h-full overflow-y-auto px-6 py-10"
+                    className="w-full flex-none h-full overflow-y-auto px-6 pt-8"
                   >
-                    <div className="space-y-5 text-sm text-slate-200">
-                      <h3 className="text-2xl font-semibold text-white">
-                        Computational Theory
-                      </h3>
-                      <p>
-                        Theoretical computer science uses cellular automata as testbeds for universality,
-                        complexity, and algorithmic behavior. They connect physics-like local interactions
-                        to rigorous computation questions.
-                      </p>
-                      <ul className="list-disc space-y-1 pl-5 text-slate-300">
-                        <li>Universality: some CA can simulate arbitrary computation</li>
-                        <li>Complexity classes: rule behavior can correlate with computational power</li>
-                        <li>
-                          Computational irreducibility: predicting long-term behavior may require essentially
-                          running the system
-                        </li>
-                      </ul>
-                      <p>
-                        In other words, CA let you study how “simple rules” produce not just patterns,
-                        but computation itself.
-                      </p>
+                    <div className="flex gap-0 items-stretch h-full">
+                      <div className="w-3/5 shrink-0 self-stretch overflow-hidden rounded-2xl border border-slate-700/60">
+                        <img
+                          src="/turing machine.jpg"
+                          alt="Turing Machine"
+                          className="w-full h-full object-cover object-center"
+                        />
+                      </div>
+                      <div className="flex-1 space-y-5 text-sm text-slate-200 text-right pl-6 flex flex-col justify-start pt-0">
+                        <h3 className="text-2xl font-semibold text-white">Computational Theory</h3>
+                        <p>
+                          Computation itself may require the edge of chaos.
+                          Stephen Wolfram showed that only Rule 110 — operating at the boundary
+                          between order and randomness — is capable of universal computation.
+                        </p>
+                        <ul className="space-y-1 text-slate-300 list-none">
+                          <li>Ordered rules produce static or periodic outputs — no real computation</li>
+                          <li>Chaotic rules destroy information too quickly to process it</li>
+                          <li>Only edge-of-chaos rules sustain the structured complexity needed to compute</li>
+                        </ul>
+                        <p className="text-indigo-200">
+                          The Turing machine — the foundation of all modern computing — can be
+                          simulated by a cellular automaton operating precisely at this boundary.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -715,7 +757,7 @@ export default function HomePage() {
                   <a href="/credits" className="hover:text-slate-200 transition">Credits</a>
                 </div>
                 <div className="text-[11px] text-slate-500">
-                  © 2026 Rashaun Williams · All rights reserved.
+                  © 2026 Rashaun Williams & Sawyer Robinson · All rights reserved.
                 </div>
               </div>
             </footer>

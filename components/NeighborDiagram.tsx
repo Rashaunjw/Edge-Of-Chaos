@@ -31,6 +31,10 @@ export default function NeighborDiagram() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const size = 90;
       const gap = 10;
+      const totalW = 3 * size + 2 * gap;
+      const totalH = 3 * size + 2 * gap;
+      const offsetX = (300 - totalW) / 2;
+      const offsetY = (300 - totalH) / 2;
       for (let y = 0; y < 3; y += 1) {
         for (let x = 0; x < 3; x += 1) {
           const idx = y * 3 + x;
@@ -40,7 +44,7 @@ export default function NeighborDiagram() {
             : grid[idx]
               ? "rgba(59, 130, 246, 0.7)"
               : "rgba(30, 41, 59, 0.7)";
-          ctx.fillRect(x * (size + gap), y * (size + gap), size, size);
+          ctx.fillRect(offsetX + x * (size + gap), offsetY + y * (size + gap), size, size);
         }
       }
       requestAnimationFrame(draw);
