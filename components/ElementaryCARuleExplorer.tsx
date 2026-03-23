@@ -95,12 +95,7 @@ export default function ElementaryCARuleExplorer() {
       for (let c = 0; c < COLS; c++) {
         if (!row[c]) continue;
         // Fade older rows slightly
-        const age = r / visible;
-        ctx.fillStyle = age > 0.7
-          ? "#a78bfa"          // violet-400 - recent rows
-          : age > 0.4
-            ? "#7c3aed"        // violet-600 - mid rows
-            : "#4c1d95";       // violet-900 - old rows
+        ctx.fillStyle = "#7c3aed";
         ctx.fillRect(c * cw + 0.5, r * rh + 0.5, cw - 1, rh - 1);
       }
     }

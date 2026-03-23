@@ -38,20 +38,51 @@ export default function CreditsPage() {
 
             <ul className="space-y-5">
               {[
-                { label: "John Conway", note: "Photographer / Source · URL · License", href: undefined },
-                { label: "Christopher Langton", note: "Photographer / Source · URL · License", href: undefined },
-                { label: "Snowflake", note: "Photographer / Source · URL · License", href: undefined },
-                { label: "Animal Skin Patterns (Zebra)", note: "Photographer / Source · URL · License", href: undefined },
-                { label: "Wildfire", note: "Photographer / Source · URL · License", href: undefined },
-                { label: "Brain Section Render (Neuroscience)", note: "Shutterstock · Standard License", href: "https://www.shutterstock.com/search/brain-section-render" },
+                {
+                  label: "John Conway",
+                  note: "Denise Applewhite / Princeton University Office of Communications · Editorial use",
+                  href: "https://www.princeton.edu/news/2020/04/14/mathematician-john-horton-conway-magical-genius-known-inventing-game-life-dies-age",
+                },
+                {
+                  label: "Christopher Langton",
+                  note: "SentezFikir · Editorial use",
+                  href: "https://sentezfikir.blogspot.com/2018/01/christopher-g-langton-yapay-zeka-uzerine.html",
+                },
+                {
+                  label: "Stephen Wolfram",
+                  note: "Institute for Advanced Study (IAS), University of Amsterdam · Editorial use",
+                  href: "https://ias.uva.nl/content/news/2020/11/stephen-wolfram-kicks-off-science-beyond-the-horizon.html",
+                },
+                {
+                  label: "Economics (Stock Market)",
+                  note: "Freepik · Premium License",
+                  href: "https://www.freepik.com/premium-photo/index-graph-stock-market-financail-data-analysis_2550372.htm",
+                },
+                {
+                  label: "Networks / Distributed Systems",
+                  note: "Freepik · Premium AI Image License",
+                  href: "https://www.freepik.com/premium-ai-image/diagram-distributed-computing-network-with-tasks-being-processed-across-multiple-nodes_302138829.htm",
+                },
+                {
+                  label: "Snowflake",
+                  note: "Inspired Pencil · Real Snowflake Photography",
+                  href: "https://ar.inspiredpencil.com/pictures-2023/real-snowflake-photography",
+                },
+                {
+                  label: "Zebra (Animal Skin Patterns)",
+                  note: "Dreamstime · Royalty-free stock photo",
+                  href: "https://www.dreamstime.com/close-up-zebra-s-face-detailed-view-close-up-zebra-s-face-detailed-view-image308155644",
+                },
+                {
+                  label: "Wildfire",
+                  note: "Seth Truscott / CAHNRS News, Washington State University · Editorial use",
+                  href: "https://news.cahnrs.wsu.edu/article/living-with-fire-understanding-unprotected-lands/",
+                },
               ].map((item) => (
                 <li key={item.label} className="border-b border-slate-700/40 pb-4">
                   <div className="font-medium text-white">{item.label}</div>
-                  {item.href ? (
-                    <a href={item.href} target="_blank" rel="noopener noreferrer" className="mt-1 block text-xs text-indigo-300 hover:text-indigo-100 transition italic">{item.note} ↗</a>
-                  ) : (
-                    <div className="mt-1 text-xs text-slate-400 italic">{item.note}</div>
-                  )}
+                  <a href={item.href} target="_blank" rel="noopener noreferrer" className="mt-1 block text-xs text-indigo-300 hover:text-indigo-100 transition italic">{item.note} ↗</a>
+                  <div className="mt-0.5 text-[10px] text-slate-500 break-all">{item.href}</div>
                 </li>
               ))}
             </ul>

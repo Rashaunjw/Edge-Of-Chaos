@@ -270,13 +270,11 @@ export default function HomePage() {
                   {/* Image - left side */}
                   <div className="flex flex-col items-center gap-2 shrink-0">
                     <img
-                      src="/wolfram.jpeg"
+                      src="/wolfram2.jpg"
                       alt="Stephen Wolfram"
-                      className="h-40 w-32 rounded-xl border border-slate-700/60 object-cover object-top"
+                      className="h-60 w-48 rounded-xl border border-slate-700/60 object-cover object-center"
                     />
-                    <div className="rounded-lg border border-slate-700/60 bg-slate-800/60 px-2 py-1.5 text-center w-full">
                       <div className="text-xs font-semibold text-white">Stephen Wolfram</div>
-                    </div>
                   </div>
 
                   {/* Who / What / Why - right side of card */}
@@ -284,24 +282,23 @@ export default function HomePage() {
                     <div className="rounded-lg border border-slate-700/60 bg-slate-800/60 p-3 space-y-1">
                       <div className="text-xs font-semibold uppercase tracking-widest text-indigo-300">Who</div>
                       <ul className="mt-1 space-y-0.5 pl-1 text-slate-200 text-xs">
-                        <li>Physicist and mathematician</li>
-                        <li>Founder of Wolfram Research and Mathematica</li>
+                        <li>- Physicist and mathematician</li>
+                        <li>- Founder of Wolfram Research and Mathematica</li>
                       </ul>
                     </div>
 
                     <div className="rounded-lg border border-slate-700/60 bg-slate-800/60 p-3 space-y-1">
                       <div className="text-xs font-semibold uppercase tracking-widest text-indigo-300">What</div>
                       <ul className="mt-1 space-y-0.5 pl-1 text-slate-200 text-xs">
-                        <li>Catalogued all 256 elementary 1D cellular automaton rules</li>
-                        <li>Classified them into four behavioral classes</li>
-                        <li>Showed Rule 110 is capable of universal computation</li>
+                        <li>- Catalogued all 256 elementary 1D cellular automaton rules</li>
+                        <li>- Classified them into four behavioral classes</li>
                       </ul>
                     </div>
 
                     <div className="rounded-lg border border-indigo-500/30 bg-indigo-600/10 p-3 space-y-1">
                       <div className="text-xs font-semibold uppercase tracking-widest text-indigo-300">Why</div>
                       <p className="mt-1 text-xs text-indigo-100">
-                        Proved that the simplest possible rule systems can generate
+                        - Proved that the simplest possible rule systems can generate
                         irreducible complexity, laying the groundwork for understanding
                         where the edge of chaos lives in 1D automata.
                       </p>
@@ -330,7 +327,8 @@ export default function HomePage() {
                 </p>
               </div>
             </div>
-            <div className="mt-24 flex flex-col gap-3 h-screen">
+            <div className="h-24" />
+            <div className="flex flex-col gap-3 h-screen">
               <div className="flex flex-col gap-1 flex-none">
                 <div className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
                   Live Demo
@@ -377,28 +375,26 @@ export default function HomePage() {
               <div className="rounded-xl border border-slate-700 bg-slate-800/40 p-4">
                 <div className="flex gap-4 items-start">
                   <div className="flex-1 space-y-3">
-                    <div className="text-sm font-semibold text-white">John Conway</div>
-
                     <div className="rounded-lg border border-slate-700/60 bg-slate-800/60 p-3 space-y-1">
                       <div className="text-xs font-semibold uppercase tracking-widest text-indigo-300">Who</div>
                       <ul className="mt-1 space-y-0.5 pl-1 text-slate-200 text-xs">
-                        <li>Mathematician at Cambridge</li>
-                        <li>Created the Game of Life (1970)</li>
+                        <li>- Mathematician at Cambridge</li>
+                        <li>- Created the Game of Life (1970)</li>
                       </ul>
                     </div>
 
                     <div className="rounded-lg border border-slate-700/60 bg-slate-800/60 p-3 space-y-1">
                       <div className="text-xs font-semibold uppercase tracking-widest text-indigo-300">What</div>
                       <ul className="mt-1 space-y-0.5 pl-1 text-slate-200 text-xs">
-                        <li>Developed a 2D cellular automaton with simple rules</li>
-                        <li>Demonstrated emergence of complex patterns</li>
+                        <li>- Developed a 2D cellular automaton with simple rules</li>
+                        <li>- Demonstrated emergence of complex patterns</li>
                       </ul>
                     </div>
 
                     <div className="rounded-lg border border-indigo-500/30 bg-indigo-600/10 p-3 space-y-1">
                       <div className="text-xs font-semibold uppercase tracking-widest text-indigo-300">Why</div>
                       <p className="mt-1 text-xs text-indigo-100">
-                        Showed that simple rules can produce lifelike complexity and even universal computation.
+                        - Showed that simple rules can produce lifelike complexity and even universal computation.
                       </p>
                     </div>
                   </div>
@@ -407,17 +403,17 @@ export default function HomePage() {
                     <img
                       src="/researchers/john-conway.png"
                       alt="John Conway"
-                      className="h-40 w-32 rounded-xl border border-slate-700/60 object-cover"
+                      className="h-60 w-48 rounded-xl border border-slate-700/60 object-cover"
                     />
-                    <div className="rounded-lg border border-slate-700/60 bg-slate-800/60 px-2 py-1.5 text-center w-full">
+                    <div className="text-center w-48">
                       <div className="text-xs font-semibold text-white">John Conway</div>
-                      <div className="text-[10px] text-slate-400">Mathematician · Cambridge</div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="mt-144 h-screen">
+            <div className="h-16" />
+            <div className="h-screen">
               <DemoLifeCanvas />
             </div>
           </Section>
@@ -447,22 +443,23 @@ export default function HomePage() {
                     <div className="rounded-lg border border-slate-700/60 bg-slate-800/60 p-3 space-y-1">
                       <div className="text-xs font-semibold uppercase tracking-widest text-indigo-300">Who</div>
                       <ul className="mt-1 space-y-0.5 pl-1 text-slate-200 text-xs">
-                        <li>Computer scientist, founder of Artificial Life</li>
+                        <li>- Computer scientist</li>
+                        <li>- Founder of Artificial Life</li>
                       </ul>
                     </div>
 
                     <div className="rounded-lg border border-slate-700/60 bg-slate-800/60 p-3 space-y-1">
                       <div className="text-xs font-semibold uppercase tracking-widest text-indigo-300">What</div>
                       <ul className="mt-1 space-y-0.5 pl-1 text-slate-200 text-xs">
-                        <li>Introduced the "Edge of Chaos" concept</li>
-                        <li>Studied phase transitions in cellular automata</li>
+                        <li>- Introduced the "Edge of Chaos" concept</li>
+                        <li>- Studied phase transitions in cellular automata</li>
                       </ul>
                     </div>
 
                     <div className="rounded-lg border border-indigo-500/30 bg-indigo-600/10 p-3 space-y-1">
                       <div className="text-xs font-semibold uppercase tracking-widest text-indigo-300">Why</div>
                       <p className="mt-1 text-xs text-indigo-100">
-                        Proposed that complexity and computation emerge at the boundary between order and chaos.
+                        - Proposed that complexity and computation emerge at the boundary between order and chaos.
                       </p>
                     </div>
                   </div>
@@ -471,9 +468,9 @@ export default function HomePage() {
                     <img
                       src="/researchers/christopher-langton.png"
                       alt="Christopher Langton"
-                      className="h-40 w-32 rounded-xl border border-slate-700/60 object-cover"
+                      className="h-60 w-48 rounded-xl border border-slate-700/60 object-cover"
                     />
-                    <div className="text-center w-32">
+                    <div className="text-center w-48">
                       <p className="text-xs font-semibold text-white leading-tight">Christopher Langton</p>
                     </div>
                   </div>
@@ -481,7 +478,8 @@ export default function HomePage() {
               </div>
 
             </div>
-            <div className="mt-36 flex flex-col gap-3 h-screen">
+            <div className="h-16" />
+            <div className="flex flex-col gap-3 h-screen">
               {/* Demo header - edit the text below */}
               <div className="flex flex-col gap-1">
                 <div className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
@@ -586,7 +584,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div className="h-[calc(100vh-280px)] overflow-hidden rounded-2xl border border-slate-700/60 bg-slate-800/40">
+              <div className="h-[calc(100vh-210px)] overflow-hidden rounded-2xl border border-slate-700/60 bg-slate-800/40">
                 <div
                   className="flex h-full w-full transition-transform duration-500 ease-in-out"
                   style={{ transform: `translateX(-${applicationsIndex * 100}%)` }}
@@ -701,7 +699,7 @@ export default function HomePage() {
           <section
             id="conclusion"
             data-section
-            className="snap-section relative flex min-h-screen flex-col scroll-mt-12 border-b border-slate-700/60 px-6 py-8 md:px-10"
+            className="snap-section relative flex h-screen flex-col scroll-mt-0 border-b border-slate-700/60 px-6 pt-12 pb-0 md:px-10 overflow-hidden"
           >
             {/* Title */}
             <div>
@@ -735,8 +733,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Spacer - adjust h-XX to move footer up or down */}
-            <div className="h-96" />
+            <div className="flex-1" />
 
             {/* Footer */}
             <footer className="border-t border-slate-700/40 pt-5 pb-4">
