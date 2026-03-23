@@ -183,7 +183,7 @@ export default function DemoLifeCanvas() {
   const [running, setRunning] = useState(false);
   const [generation, setGeneration] = useState(0);
 
-  // Placement mode — which preset is being placed, and cursor cell
+  // Placement mode - which preset is being placed, and cursor cell
   const [placing, setPlacing] = useState<Preset | null>(null);
   const [cursorCell, setCursorCell] = useState<{ x: number; y: number } | null>(null);
 
@@ -336,7 +336,7 @@ export default function DemoLifeCanvas() {
       const cell = getCellFromEvent(e);
       if (!cell) return;
 
-      // Placement mode — stamp and exit
+      // Placement mode - stamp and exit
       if (placing) {
         setGrid((prev) =>
           insertPattern(prev, cols, rows, placing.points, cell.x, cell.y)

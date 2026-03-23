@@ -4,7 +4,7 @@ export default function CreditsPage() {
   return (
     <div className="min-h-screen bg-slate-800 px-6 py-16 md:px-14">
 
-      {/* Back button — top right */}
+      {/* Back button - top right */}
       <div className="fixed top-5 right-6 z-50">
         <Link
           href="/"
@@ -30,7 +30,7 @@ export default function CreditsPage() {
         {/* Two-column layout */}
         <div className="grid gap-10 md:grid-cols-2 md:divide-x md:divide-slate-700/60">
 
-          {/* Left — Image Credits */}
+          {/* Left - Image Credits */}
           <div className="space-y-5 md:pr-10">
             <div className="text-xs font-semibold uppercase tracking-[0.25em] text-indigo-300">
               Image Credits
@@ -57,7 +57,7 @@ export default function CreditsPage() {
             </ul>
           </div>
 
-          {/* Right — References */}
+          {/* Right - References */}
           <div className="space-y-5 md:pl-10">
             <div className="text-xs font-semibold uppercase tracking-[0.25em] text-indigo-300">
               References
@@ -74,7 +74,7 @@ export default function CreditsPage() {
                   note: "Turing, A. M. (1952). The Chemical Basis of Morphogenesis. Philosophical Transactions of the Royal Society B, 237(641), 37–72.",
                 },
                 {
-                  label: "Cellular Automata — General Theory",
+                  label: "Cellular Automata: General Theory",
                   note: "Wolfram, S. (2002). A New Kind of Science. Wolfram Media.",
                 },
               ].map((item) => (
@@ -130,7 +130,7 @@ export default function CreditsPage() {
 
         </div>
 
-        {/* Full-width — Web Resources */}
+        {/* Full-width - Web Resources */}
         <div className="border-t border-slate-700/40 pt-10 space-y-5">
           <div className="text-xs font-semibold uppercase tracking-[0.25em] text-indigo-300">
             Web Resources
@@ -138,7 +138,7 @@ export default function CreditsPage() {
           <ul className="grid gap-5 sm:grid-cols-2">
             {[
               {
-                label: "Cellular Automata — Stanford Encyclopedia of Philosophy",
+                label: "Cellular Automata: Stanford Encyclopedia of Philosophy",
                 note: "Rohrlich, F. & Eck, D. Cellular Automata. Stanford Encyclopedia of Philosophy.",
                 href: "https://plato.stanford.edu/entries/cellular-automata/#EdgeChao",
               },
@@ -149,7 +149,7 @@ export default function CreditsPage() {
               },
               {
                 label: "Edge of Chaos Interactive Demo",
-                note: "Eck, D. J. Edge of Chaos — Elementary Cellular Automata Explorer. math.hws.edu.",
+                note: "Eck, D. J. Edge of Chaos: Elementary Cellular Automata Explorer. math.hws.edu.",
                 href: "https://math.hws.edu/xJava/CA/EdgeOfChaos.html",
               },
               {

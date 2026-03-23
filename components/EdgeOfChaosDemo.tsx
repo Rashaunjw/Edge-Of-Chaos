@@ -17,7 +17,7 @@ const DESCS: Record<RuleKey, string> = {
   order:
     "High stability: cells survive with many neighbors, grids solidify into stable dense blobs with little change.",
   life:
-    "Edge of chaos: Life sits at the boundary between order and chaos — complex, persistent structures like gliders emerge.",
+    "Edge of chaos: Life sits at the boundary between order and chaos; complex, persistent structures like gliders emerge.",
   chaos:
     "Total chaos: no survival rule, cells flicker randomly every generation, no structure persists.",
 };
@@ -142,7 +142,7 @@ export default function EdgeOfChaosDemo() {
   const fillPct = sliderValue;
 
   return (
-    <div className="space-y-4 rounded-2xl border border-slate-700 bg-slate-900/60 p-5 shadow-sm">
+    <div className="flex flex-col gap-4 h-full rounded-2xl border border-slate-700 bg-slate-900/60 p-5 shadow-sm">
 
       {/* Spectrum meter */}
       <div className="space-y-2">
@@ -178,9 +178,9 @@ export default function EdgeOfChaosDemo() {
           className="rounded-full border px-3 py-1 text-xs font-medium transition-colors duration-300"
           style={{ borderColor: accentColor, color: accentColor, background: `${accentColor}18` }}
         >
-          {activeRule === "order" ? "Order — B3/S1234"
-            : activeRule === "life" ? "Edge of Chaos — B3/S23"
-            : "Chaos — B36/S"}
+          {activeRule === "order" ? "Order: B3/S1234"
+            : activeRule === "life" ? "Edge of Chaos: B3/S23"
+            : "Chaos: B36/S"}
         </span>
 
         <button
@@ -205,22 +205,22 @@ export default function EdgeOfChaosDemo() {
         </button>
       </div>
 
-      {/* Canvas */}
-      <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-1">
+      {/* Canvas - grows to fill remaining height */}
+      <div className="flex-1 min-h-0 rounded-xl border border-slate-700 bg-slate-950/50 p-1">
         <canvas
           ref={canvasRef}
-          className="w-full rounded-lg"
-          style={{ height: "280px", display: "block" }}
+          className="w-full h-full rounded-lg"
+          style={{ display: "block" }}
         />
       </div>
 
       {/* Description */}
-      <p className="text-xs leading-relaxed transition-all duration-300" style={{ color: "#94a3b8" }}>
+      <p className="flex-none text-xs leading-relaxed transition-all duration-300" style={{ color: "#94a3b8" }}>
         {DESCS[activeRule]}
       </p>
 
       {/* Legend */}
-      <div className="flex flex-wrap gap-4">
+      <div className="flex-none flex flex-wrap gap-4">
         <div className="flex items-center gap-1.5">
           <div className="h-3 w-3 flex-shrink-0 rounded-sm" style={{ background: "#1D9E75" }} />
           <span className="text-xs text-slate-400">alive (stable)</span>
