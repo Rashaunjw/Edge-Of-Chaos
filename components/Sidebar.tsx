@@ -114,9 +114,11 @@ export default function Sidebar({
             <a
               href={`#${section.id}`}
               onClick={(e) => {
+                e.preventDefault();
                 if (handleThis) {
-                  e.preventDefault();
                   onNavigate?.(section.id);
+                } else {
+                  document.getElementById(section.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
                 }
                 setOpen(false);
               }}
@@ -155,9 +157,11 @@ export default function Sidebar({
                       key={child.id}
                       href={`#${child.id}`}
                       onClick={(e) => {
+                        e.preventDefault();
                         if (childHandle) {
-                          e.preventDefault();
                           onNavigate?.(child.id);
+                        } else {
+                          document.getElementById(child.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
                         }
                         setOpen(false);
                       }}
