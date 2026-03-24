@@ -160,11 +160,8 @@ export default function HomePage() {
                     From Simple Rules to Living Systems: Cellular Automata and
                     the Edge of Chaos
                   </h1>
-
-                  <p className="text-lg text-slate-200">
-                    Complex, life-like behavior can arise from simple local
-                    interactions.
-                  </p>
+                  <br />
+                  <br />
 
                   <div className="rounded-xl border border-indigo-400/40 bg-indigo-500/10 p-4">
                     <div className="text-sm font-semibold uppercase tracking-[0.3em] text-indigo-200">
@@ -324,8 +321,8 @@ export default function HomePage() {
                   complexity.
                 </p>
                 <p className="text-indigo-200">
-                  Stephen Wolfram systematically catalogued all 256 elementary
-                  rules and found that a handful, especially Rule 110, produce
+                  Stephen Wolfram catalogued all 256 elementary
+                  rules and found that a handfulproduce
                   behavior complex enough to support universal computation.
                 </p>
               </div>
@@ -336,7 +333,7 @@ export default function HomePage() {
                 <div className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
                   Live Demo
                 </div>
-                <div className="text-lg font-semibold text-white">
+                <div className="text-xl font-semibold text-white">
                   Elementary Rule Explorer
                 </div>
                 <p className="text-base text-slate-300">
@@ -399,16 +396,12 @@ export default function HomePage() {
               </div>
 
               {/* Text - RIGHT column */}
-              <div className="flex flex-col justify-evenly text-lg text-slate-200 self-stretch">
+              <div className="flex flex-col justify-evenly text-xl text-slate-200 self-stretch">
                 <p>
                   In 1970, mathematician John Conway created a famous two-dimensional
                   cellular automaton: the Game of Life.
                 </p>
-                <p>
-                  It uses only a small set of local update rules, but the results can
-                  look alive: gliders, oscillators, and long-lived "guns" that generate
-                  moving patterns.
-                </p>
+
                 <p>
                   Watch for how interaction between local structures amplifies into global
                   motion and sustained activity.
@@ -475,13 +468,11 @@ export default function HomePage() {
               </div>
 
               {/* Text - RIGHT column */}
-              <div className="flex flex-col justify-evenly text-lg text-slate-200 self-stretch">
+              <div className="flex flex-col justify-evenly text-xl text-slate-200 self-stretch">
                 <p>
-                  Christopher Langton proposed that the most interesting computational
-                  behavior occurs at the boundary between order and chaos. In this region,
-                  systems can maintain structure and information flow while still exploring
-                  new outcomes.
+                  Artificial Life → Cellular Automata → Lambda Parameter → Edge of Chaos
                 </p>
+
                 <blockquote className="border-l-2 border-indigo-400/60 pl-3 text-lg text-indigo-200">
                   "Life exists at the edge of chaos."
                 </blockquote>
@@ -498,10 +489,10 @@ export default function HomePage() {
                 <div className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
                   Live Demo
                 </div>
-                <div className="text-base font-semibold text-white">
-                  Edge of Chaos Explorer
+                <div className="text-xl font-semibold text-white">
+                  Lambda Parameter Explorer
                 </div>
-                <p className="text-xs text-slate-300">
+                <p className="text-base text-slate-300">
                   Drag the slider to move between order, the edge of chaos, and full randomness. Watch how the cellular automaton behavior changes.
                 </p>
               </div>
@@ -658,14 +649,14 @@ export default function HomePage() {
                         />
                       </div>
                       {/* Copy - right */}
-                      <div className="flex-1 space-y-5 text-lg text-slate-200">
+                      <div className="flex-1 space-y-5 text-lg text-slate-200 gap-4 flex flex-col text-right">
                         <h3 className="text-3xl font-semibold text-white">Networks and Distributed Systems</h3>
                         <p>
                           Distributed systems like the internet or cloud infrastructure need to balance
                           stability and flexibility. Too much structure makes them fragile, while too
                           much randomness makes them unstable.
                         </p>
-                        <ul className="list-disc space-y-1 pl-5 text-slate-300">
+                        <ul className="space-y-1 text-slate-300 list-none">
                           <li><span className="text-white font-medium">Ordered:</span> the system becomes fragile, unable to adapt to traffic spikes or failures</li>
                           <li><span className="text-white font-medium">Chaotic:</span> no consistency, no reliability, no coordination between components</li>
                           <li><span className="text-white font-medium">Edge of chaos:</span> scalable and resilient, stable enough to be reliable, flexible enough to adapt</li>

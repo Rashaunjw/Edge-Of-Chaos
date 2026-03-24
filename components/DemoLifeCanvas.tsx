@@ -383,7 +383,7 @@ export default function DemoLifeCanvas() {
         <div className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
           Live Demo
         </div>
-        <div className="text-lg font-semibold text-white">
+        <div className="text-xl font-semibold text-white">
           Conway's Game of Life
         </div>
         <p className="text-base text-slate-300">

@@ -40,7 +40,7 @@ export default function NatureCards() {
           className="flex flex-col rounded-2xl border border-slate-700 bg-slate-800/60 p-4 shadow-sm"
         >
           <div className="text-lg font-semibold text-white">{card.title}</div>
-          <ul className="mt-2 space-y-1.5 text-base">
+          <ul className="mt-2 space-y-1.5 gap-4 text-base">
             {card.bullets.map((b) => (
               <li key={b.label} className="text-slate-300">
                 <span className="font-medium text-white">{b.label}</span> {b.text}
