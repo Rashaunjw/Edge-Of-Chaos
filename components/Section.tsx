@@ -6,6 +6,8 @@ interface SectionProps {
   subtitle?: string;
   children: React.ReactNode;
   className?: string;
+  titleClassName?: string;
+  subtitleClassName?: string;
 }
 
 export default function Section({
@@ -14,6 +16,8 @@ export default function Section({
   subtitle,
   children,
   className,
+  titleClassName,
+  subtitleClassName,
 }: SectionProps) {
   return (
     <section
@@ -33,9 +37,9 @@ export default function Section({
       >
         {title ? (
           <div>
-            <h2 className="text-3xl font-semibold text-white">{title}</h2>
+            <h2 className={`text-3xl font-semibold text-white ${titleClassName ?? ""}`}>{title}</h2>
             {subtitle ? (
-              <p className="mt-2 text-sm text-slate-300">{subtitle}</p>
+              <p className={`mt-2 text-sm text-slate-300 ${subtitleClassName ?? ""}`}>{subtitle}</p>
             ) : null}
           </div>
         ) : null}

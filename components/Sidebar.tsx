@@ -123,7 +123,7 @@ export default function Sidebar({
               className="group flex items-center gap-3 px-3 py-2.5"
             >
               <span className={[
-                "text-[10px] font-bold tabular-nums transition-colors duration-200",
+                "text-[12px] font-bold tabular-nums transition-colors duration-200",
                 allowHighlight && isActive
                   ? "text-indigo-400"
                   : isActive
@@ -133,7 +133,7 @@ export default function Sidebar({
                 {String(index + 1).padStart(2, "0")}
               </span>
               <span className={[
-                "text-sm font-medium transition-colors duration-200",
+                "text-base font-medium transition-colors duration-200",
                 isActive ? "text-white" : "text-slate-300 group-hover:text-white",
               ].join(" ")}>
                 {section.label}
@@ -162,7 +162,7 @@ export default function Sidebar({
                         setOpen(false);
                       }}
                       className={[
-                        "rounded-lg px-3 py-1.5 text-xs transition-all duration-200",
+                        "rounded-lg px-3 py-1.5 text-sm transition-all duration-200",
                         childActive
                           ? "bg-indigo-600/20 text-indigo-200"
                           : "text-slate-400 hover:bg-slate-700/40 hover:text-slate-200",
@@ -204,10 +204,10 @@ export default function Sidebar({
             className="pointer-events-none absolute right-0 top-6 opacity-30"
           />
           <div className="relative z-10 flex-shrink-0">
-            <div className="text-xs uppercase tracking-[0.3em] text-slate-300">
+            <div className="text-sm uppercase tracking-[0.3em] text-slate-300">
               Research Site
             </div>
-            <div className="mt-2 text-base font-semibold text-white">
+            <div className="mt-2 text-lg font-semibold text-white">
               Cellular Automata and the
               Edge of Chaos
             </div>

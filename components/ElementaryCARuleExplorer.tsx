@@ -9,6 +9,7 @@ const PRESETS = [
   { label: "Rule 30",  value: 30,  desc: "Chaotic: used in random number generation" },
   { label: "Rule 90",  value: 90,  desc: "Fractal: Sierpinski triangle" },
   { label: "Rule 110", value: 110, desc: "Complex: capable of universal computation" },
+  { label: "Rule 124", value: 124, desc: "Complex: produces intricate nested patterns near the edge of chaos" },
   { label: "Rule 184", value: 184, desc: "Ordered: models traffic flow" },
 ];
 

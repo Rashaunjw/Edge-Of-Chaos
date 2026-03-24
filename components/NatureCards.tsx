@@ -1,21 +1,33 @@
 const cards = [
   {
     title: "Snowflakes",
-    text: "Snowflake growth emerges from local interactions between water molecules during crystallization. These interactions produce branching fractal structures that resemble cellular automata simulations.",
+    bullets: [
+      { label: "Ordered:", text: "uniform ice sheets with no branching structure" },
+      { label: "Chaotic:", text: "random irregular crystals with no recognizable form" },
+      { label: "Edge of chaos:", text: "intricate fractal branching patterns unique to each snowflake" },
+    ],
     imageSrc: "/nature/snowflake.png",
-    objectFit: "object-contain object-top",
+    objectFit: "object-contain",
   },
   {
     title: "Animal Skin Patterns",
-    text: "Patterns such as zebra stripes and leopard spots emerge from reaction-diffusion processes first described by Alan Turing. Local chemical interactions generate large-scale patterns across animal skin.",
+    bullets: [
+      { label: "Ordered:", text: "solid uniform color across the entire skin surface" },
+      { label: "Chaotic:", text: "random noise with no coherent pattern" },
+      { label: "Edge of chaos:", text: "stripes and spots that repeat with local variation" },
+    ],
     imageSrc: "/nature/animal-patterns.png",
     objectFit: "object-cover",
   },
   {
     title: "Wildfires",
-    text: "Wildfire spread is often modeled using cellular automata. Each cell represents a tree, burning tree, or empty space. At certain densities of vegetation, fires spread in complex branching patterns resembling critical systems near the edge of chaos.",
+    bullets: [
+      { label: "Ordered:", text: "when vegetation is too sparse for fire to spread at all" },
+      { label: "Chaotic:", text: "uniform burning that consumes everything instantly" },
+      { label: "Edge of chaos:", text: "complex branching fire fronts that resemble real wildfire behavior" },
+    ],
     imageSrc: "/nature/wildfires.png",
-    objectFit: "object-contain object-top",
+    objectFit: "object-contain",
   },
 ];
 
@@ -27,12 +39,18 @@ export default function NatureCards() {
           key={card.title}
           className="flex flex-col rounded-2xl border border-slate-700 bg-slate-800/60 p-4 shadow-sm"
         >
-          <div className="text-sm font-semibold text-white">{card.title}</div>
-          <p className="mt-2 text-xs text-slate-300">{card.text}</p>
+          <div className="text-lg font-semibold text-white">{card.title}</div>
+          <ul className="mt-2 space-y-1.5 text-base">
+            {card.bullets.map((b) => (
+              <li key={b.label} className="text-slate-300">
+                <span className="font-medium text-white">{b.label}</span> {b.text}
+              </li>
+            ))}
+          </ul>
           <img
             src={card.imageSrc}
             alt={card.title}
-            className={`mt-3 min-h-0 flex-1 w-full rounded-lg border border-slate-700/60 ${card.objectFit}`}
+            className={`mt-3 w-full h-auto rounded-lg border border-slate-700/60 ${card.objectFit}`}
           />
         </div>
       ))}

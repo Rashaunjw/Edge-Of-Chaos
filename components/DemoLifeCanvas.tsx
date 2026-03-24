@@ -383,10 +383,10 @@ export default function DemoLifeCanvas() {
         <div className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
           Live Demo
         </div>
-        <div className="text-base font-semibold text-white">
+        <div className="text-lg font-semibold text-white">
           Conway's Game of Life
         </div>
-        <p className="text-xs text-slate-300">
+        <p className="text-base text-slate-300">
           {placing
             ? `Move your cursor over the board and click to place the ${placing.label}. Press Esc to cancel.`
             : "Click or drag to draw cells. Select a pattern to place it, then press Start."}
@@ -426,10 +426,7 @@ export default function DemoLifeCanvas() {
             if (!group.length) return null;
             return (
               <div key={cat} className="flex flex-wrap items-center gap-x-1.5 gap-y-1.5">
-                {catIdx !== 0 && (
-                  <span className="text-slate-500 select-none text-base leading-none">•</span>
-                )}
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 shrink-0">
+                <span className="text-[12px] font-semibold uppercase tracking-widest text-slate-500 shrink-0">
                   {cat}
                 </span>
                 {group.map((preset) => (
@@ -438,7 +435,7 @@ export default function DemoLifeCanvas() {
                     type="button"
                     onClick={() => setPlacing(placing?.label === preset.label ? null : preset)}
                     className={[
-                      "rounded-full border px-3 py-1 text-xs transition",
+                      "rounded-full border px-4 py-1.5 text-sm transition",
                       placing?.label === preset.label
                         ? "border-indigo-400/80 bg-indigo-500/30 text-indigo-100"
                         : "border-slate-700 bg-slate-800/60 text-slate-300 hover:border-indigo-400/60 hover:bg-indigo-500/10 hover:text-indigo-100",
