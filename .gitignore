@@ -2,3 +2,5 @@ node_modules/
 .next/
 .venv/
 *.mov
+*.b64
+tmp_frames/
