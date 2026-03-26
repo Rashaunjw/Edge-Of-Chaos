@@ -744,7 +744,7 @@ export default function HomePage() {
                   <a href="/credits" className="hover:text-slate-200 transition">Credits</a>
                 </div>
                 <div className="text-[11px] text-slate-500">
-                  © 2026 Rashaun Williams & Sawyer Robinson · All rights reserved.
+                  © 2026 Rashaun Williams · All rights reserved.
                 </div>
               </div>
             </footer>
